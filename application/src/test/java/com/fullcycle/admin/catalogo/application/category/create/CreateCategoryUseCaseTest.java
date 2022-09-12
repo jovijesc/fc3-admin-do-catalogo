@@ -29,7 +29,7 @@ public class CreateCategoryUseCaseTest {
     private CategoryGateway categoryGateway;
 
     @Test
-    public void ginveAValidCommand_whenCallsCreateCategory_shouldReturnCategoryId() {
+    public void givenAValidCommand_whenCallsCreateCategory_shouldReturnCategoryId() {
 
         final var expectedName = "Filmes";
         final var expectedDescription = "A categoria mais assistida";
@@ -59,7 +59,7 @@ public class CreateCategoryUseCaseTest {
 
 
     @Test
-    public void ginveAnInvalidName_whenCallsCreateCategory_shouldReturnDomainException() {
+    public void givenAnInvalidName_whenCallsCreateCategory_shouldReturnDomainException() {
 
         final String expectedName = null;
         final var expectedDescription = "A categoria mais assistida";
@@ -79,7 +79,7 @@ public class CreateCategoryUseCaseTest {
     }
 
     @Test
-    public void ginveAValidCommandWithInactiveCategory_whenCallsCreateCategory_shouldReturnInactiveCategoryId() {
+    public void givenAValidCommandWithInactiveCategory_whenCallsCreateCategory_shouldReturnInactiveCategoryId() {
 
         final var expectedName = "Filmes";
         final var expectedDescription = "A categoria mais assistida";
@@ -108,7 +108,7 @@ public class CreateCategoryUseCaseTest {
     }
 
     @Test
-    public void ginveAValidCommand_whenGatewayThrowsRandomException_shouldReturnException() {
+    public void givenAValidCommand_whenGatewayThrowsRandomException_shouldReturnException() {
 
         final var expectedName = "Filmes";
         final var expectedDescription = "A categoria mais assistida";
