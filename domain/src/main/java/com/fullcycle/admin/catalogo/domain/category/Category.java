@@ -1,6 +1,7 @@
 package com.fullcycle.admin.catalogo.domain.category;
 
 import com.fullcycle.admin.catalogo.domain.AggregateRoot;
+import com.fullcycle.admin.catalogo.domain.utils.InstantUtils;
 import com.fullcycle.admin.catalogo.domain.validation.ValidationHandler;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -36,14 +37,7 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable {
 
     public static Category newCategory(final String aName, String aDescription, final boolean isActive) {
         final var id = CategoryID.unique();
-        /* Bug(or not?) with nanoseconds and microseconds
-           When compared an Instant.now() with a value fetched from database, there is a difference
-           Instant.now() has precision 9. Instant got from database has precision 6
-
-           https://bugs.openjdk.org/browse/JDK-8266563
-           https://igniterealtime.atlassian.net/browse/OF-1738
-        */
-        final var now = Instant.now().truncatedTo(ChronoUnit.MICROS);
+        final var now = InstantUtils.now();
         final var deletedAt = isActive ? null : now;
         return new Category(id, aName, aDescription, isActive, now, now, deletedAt);
     }
