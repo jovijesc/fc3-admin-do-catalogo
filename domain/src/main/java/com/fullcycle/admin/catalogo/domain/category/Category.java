@@ -138,7 +138,7 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable {
     }
 
     @Override
-    protected Category clone()  {
+    public Category clone()  {
         try {
             return (Category) super.clone();
         } catch (CloneNotSupportedException e) {
