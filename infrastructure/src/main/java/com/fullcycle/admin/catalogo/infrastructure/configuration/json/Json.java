@@ -1,19 +1,22 @@
 package com.fullcycle.admin.catalogo.infrastructure.configuration.json;
 
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Callable;
 
 public enum Json {
-
     INSTANCE;
 
     public static ObjectMapper mapper() {
@@ -37,12 +40,12 @@ public enum Json {
                     SerializationFeature.WRITE_DATES_AS_TIMESTAMPS
             )
             .modules(new JavaTimeModule(), new Jdk8Module(), afterburnerModule())
-            .propertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
+            .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
             .build();
 
     private AfterburnerModule afterburnerModule() {
         var module = new AfterburnerModule();
-        // make Afterburner generate bytecode only for public getter/setter and fields
+        // make Afterburner generate bytecode only for public getters/setter and fields
         // without this, Java 9+ complains of "Illegal reflective access"
         module.setUseValueClassLoader(false);
         return module;
