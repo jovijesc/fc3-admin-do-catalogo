@@ -14,7 +14,6 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -149,6 +148,44 @@ public class CategoryE2ETest {
                 .andExpect(jsonPath("$.items[0].name", equalTo("Documentários")))
                 .andExpect(jsonPath("$.items[1].name", equalTo("Filmes")))
                 .andExpect(jsonPath("$.items[2].name", equalTo("Séries")));
+
+    }
+
+    @Test
+    public void asACatalogAdminIShouldBeAbleToGetACategoryByItsIdentifier()  throws Exception {
+        final var expectedName = "Filmes";
+        final var expectedDescription = "A categoria mais assistida";
+        final var expectedIsActive = true;
+
+        Assertions.assertEquals(0, categoryRepository.count());
+        Assertions.assertTrue(MYSQL_CONTAINER.isRunning());
+
+        final var actualId = givenACategory(expectedName, expectedDescription, expectedIsActive);
+
+        final var actualCategory = categoryRepository.findById(actualId.getValue()).get();
+
+        Assertions.assertEquals(expectedName, actualCategory.getName());
+        Assertions.assertEquals(expectedDescription, actualCategory.getDescription());
+        Assertions.assertEquals(expectedIsActive, actualCategory.isActive());
+        Assertions.assertNotNull(actualCategory.getCreatedAt());
+        Assertions.assertNotNull( actualCategory.getUpdatedAt());
+        Assertions.assertNull( actualCategory.getDeletedAt());
+
+    }
+
+    @Test
+    public void asACatalogAdminIShouldBeAbleToSeeATreatedErrorByGettingANotFoundCategory()  throws Exception {
+        Assertions.assertEquals(0, categoryRepository.count());
+        Assertions.assertTrue(MYSQL_CONTAINER.isRunning());
+
+        final var aRequest = get( "/categories/123")
+                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // Utilizado para descobrir o ID, por isso o uso do .replace("/categories/", "")
+        final var actualId = this.mvc.perform(aRequest)
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message", equalTo("Category with ID 123 was not found")));
 
     }
 
