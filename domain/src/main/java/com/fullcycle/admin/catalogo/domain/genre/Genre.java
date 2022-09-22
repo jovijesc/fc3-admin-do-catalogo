@@ -37,13 +37,7 @@ public class Genre extends AggregateRoot<GenreID> {
         this.createdAt = Objects.requireNonNull(aCreationAt, "'createdAt' should not be null");
         this.updatedAt = Objects.requireNonNull(aUpdateAt, "'updatedAt' should not be null");
         this.deletedAt = aDeleteAt;
-
-        final var notification = Notification.create();
-        validate(notification);
-
-        if(notification.hasError()) {
-            throw new NotificationException("Failed to create an Aggregate Genre", notification);
-        }
+        selfvalidate();
     }
 
     public static Genre newGenre(final String aName, final boolean isActive) {
@@ -119,5 +113,27 @@ public class Genre extends AggregateRoot<GenreID> {
         this.active = true;
         this.updatedAt = InstantUtils.now();
         return this;
+    }
+
+    public Genre update(final String aName, final boolean isActive, final List<CategoryID> categories) {
+        if(isActive) {
+            activate();
+        } else {
+            deactivate();
+        }
+        this.name = aName;
+        this.categories = new ArrayList<>(categories);
+        this.updatedAt = InstantUtils.now();
+        selfvalidate();
+        return this;
+    }
+
+    private void selfvalidate() {
+        final var notification = Notification.create();
+        validate(notification);
+
+        if(notification.hasError()) {
+            throw new NotificationException("Failed to create an Aggregate Genre", notification);
+        }
     }
 }
