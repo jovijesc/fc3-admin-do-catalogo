@@ -22,7 +22,7 @@ public class GenreTest {
         Assertions.assertEquals(expectedIsActive, actualGenre.isActive());
         Assertions.assertEquals(expectedCategories, actualGenre.getCategories().size());
         Assertions.assertNotNull(actualGenre.getCreatedAt());
-        Assertions.assertNotNull(actualGenre.getUpdateddAt());
+        Assertions.assertNotNull(actualGenre.getUpdatedAt());
         Assertions.assertNull(actualGenre.getDeletedAt());
     }
 
