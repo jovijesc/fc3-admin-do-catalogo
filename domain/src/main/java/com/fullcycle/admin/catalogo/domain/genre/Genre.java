@@ -75,6 +75,44 @@ public class Genre extends AggregateRoot<GenreID> {
         new GenreValidator(this, handler).validate();
     }
 
+    public Genre deactivate() {
+        if(getDeletedAt() == null) {
+            this.deletedAt = InstantUtils.now();
+        }
+        this.active = false;
+        this.updatedAt = InstantUtils.now();
+        return this;
+    }
+
+    public Genre activate() {
+        this.deletedAt = null;
+        this.active = true;
+        this.updatedAt = InstantUtils.now();
+        return this;
+    }
+
+    public Genre update(final String aName, final boolean isActive, final List<CategoryID> categories) {
+        if(isActive) {
+            activate();
+        } else {
+            deactivate();
+        }
+        this.name = aName;
+        this.categories = new ArrayList<>(categories != null ? categories : Collections.emptyList());
+        this.updatedAt = InstantUtils.now();
+        selfvalidate();
+        return this;
+    }
+
+    private void selfvalidate() {
+        final var notification = Notification.create();
+        validate(notification);
+
+        if(notification.hasError()) {
+            throw new NotificationException("Failed to create an Aggregate Genre", notification);
+        }
+    }
+
     public String getName() {
         return name;
     }
@@ -99,41 +137,4 @@ public class Genre extends AggregateRoot<GenreID> {
         return deletedAt;
     }
 
-    public Genre deactivate() {
-        if(getDeletedAt() == null) {
-            this.deletedAt = InstantUtils.now();
-        }
-        this.active = false;
-        this.updatedAt = InstantUtils.now();
-        return this;
-    }
-
-    public Genre activate() {
-        this.deletedAt = null;
-        this.active = true;
-        this.updatedAt = InstantUtils.now();
-        return this;
-    }
-
-    public Genre update(final String aName, final boolean isActive, final List<CategoryID> categories) {
-        if(isActive) {
-            activate();
-        } else {
-            deactivate();
-        }
-        this.name = aName;
-        this.categories = new ArrayList<>(categories);
-        this.updatedAt = InstantUtils.now();
-        selfvalidate();
-        return this;
-    }
-
-    private void selfvalidate() {
-        final var notification = Notification.create();
-        validate(notification);
-
-        if(notification.hasError()) {
-            throw new NotificationException("Failed to create an Aggregate Genre", notification);
-        }
-    }
 }
