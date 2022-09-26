@@ -1,5 +1,6 @@
 package com.fullcycle.admin.catalogo.application.genre.update;
 
+import com.fullcycle.admin.catalogo.application.UseCaseTest;
 import com.fullcycle.admin.catalogo.domain.category.CategoryGateway;
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
 import com.fullcycle.admin.catalogo.domain.exceptions.NotificationException;
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UpdateGenreUseCaseTest {
+public class UpdateGenreUseCaseTest extends UseCaseTest {
 
     @InjectMocks
     private DefaultUpdateGenreUseCase useCase;
@@ -34,6 +35,11 @@ public class UpdateGenreUseCaseTest {
 
     @Mock
     private GenreGateway genreGateway;
+
+    @Override
+    protected List<Object> getMocks() {
+        return List.of(categoryGateway, genreGateway);
+    }
 
     @Test
     public void givenAValidCommand_whenCallsUpdateGenre_shouldReturnGenreId() {
@@ -46,10 +52,10 @@ public class UpdateGenreUseCaseTest {
         final var expectedCategories = List.<CategoryID>of();
 
         final var aCommand = UpdateGenreCommand.with(
-            expectedId.getValue(),
-            expectedName,
-            expectedIsActive,
-            asString(expectedCategories)
+                expectedId.getValue(),
+                expectedName,
+                expectedIsActive,
+                asString(expectedCategories)
         );
 
         when(genreGateway.findById(any()))
@@ -68,12 +74,12 @@ public class UpdateGenreUseCaseTest {
         Mockito.verify(genreGateway, times(1)).findById(eq(expectedId));
         Mockito.verify(genreGateway, times(1)).update(Mockito.argThat(aUpdatedGenre ->
                 Objects.equals(expectedId, aUpdatedGenre.getId())
-                && Objects.equals(expectedName, aUpdatedGenre.getName())
-                && Objects.equals(expectedIsActive, aUpdatedGenre.isActive())
-                && Objects.equals(expectedCategories, aUpdatedGenre.getCategories())
-                && Objects.equals(aGenre.getCreatedAt(), aUpdatedGenre.getCreatedAt())
-                && aGenre.getUpdatedAt().isBefore(aUpdatedGenre.getUpdatedAt())
-                && Objects.isNull(aUpdatedGenre.getDeletedAt())
+                        && Objects.equals(expectedName, aUpdatedGenre.getName())
+                        && Objects.equals(expectedIsActive, aUpdatedGenre.isActive())
+                        && Objects.equals(expectedCategories, aUpdatedGenre.getCategories())
+                        && Objects.equals(aGenre.getCreatedAt(), aUpdatedGenre.getCreatedAt())
+                        && aGenre.getUpdatedAt().isBefore(aUpdatedGenre.getUpdatedAt())
+                        && Objects.isNull(aUpdatedGenre.getDeletedAt())
         ));
     }
 
@@ -259,8 +265,9 @@ public class UpdateGenreUseCaseTest {
     }
 
 
-
     private List<String> asString(final List<CategoryID> ids) {
         return ids.stream().map(CategoryID::getValue).toList();
     }
+
+
 }
