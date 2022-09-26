@@ -1,6 +1,8 @@
 package com.fullcycle.admin.catalogo.application.genre.genre.list;
 
 import com.fullcycle.admin.catalogo.application.UseCaseTest;
+import com.fullcycle.admin.catalogo.application.genre.retrieve.list.DefaultListGenreUseCase;
+import com.fullcycle.admin.catalogo.application.genre.retrieve.list.GenreListOutput;
 import com.fullcycle.admin.catalogo.domain.genre.Genre;
 import com.fullcycle.admin.catalogo.domain.genre.GenreGateway;
 import com.fullcycle.admin.catalogo.domain.pagination.Pagination;
@@ -69,7 +71,7 @@ public class ListGenreUseCaseTest extends UseCaseTest {
         // then
         Assertions.assertEquals(expectedPage, actualOutput.currentPage());
         Assertions.assertEquals(expectedPerPage, actualOutput.perPage());
-        Assertions.assertEquals(expectedTotal, actualOutput.totalItems());
+        Assertions.assertEquals(expectedTotal, actualOutput.total());
         Assertions.assertEquals(expectedItems, actualOutput.items());
 
         Mockito.verify(genreGateway, times(1)).findAll(eq(aQuery));
@@ -109,7 +111,7 @@ public class ListGenreUseCaseTest extends UseCaseTest {
         // then
         Assertions.assertEquals(expectedPage, actualOutput.currentPage());
         Assertions.assertEquals(expectedPerPage, actualOutput.perPage());
-        Assertions.assertEquals(expectedTotal, actualOutput.totalItems());
+        Assertions.assertEquals(expectedTotal, actualOutput.total());
         Assertions.assertEquals(expectedItems, actualOutput.items());
 
         Mockito.verify(genreGateway, times(1)).findAll(eq(aQuery));
@@ -117,7 +119,7 @@ public class ListGenreUseCaseTest extends UseCaseTest {
     }
 
     @Test
-    public void givenAValidQuery_whenCallsListGenreAndResultIsEmpty_shouldReturnGenres() {
+    public void givenAValidQuery_whenCallsListGenreAndGatewayThrowsRandomError_shouldReturnException() {
         // given
         final var expectedPage = 0;
         final var expectedPerPage = 10;
