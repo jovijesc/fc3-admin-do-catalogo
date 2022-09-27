@@ -17,6 +17,8 @@ import static javax.persistence.FetchType.EAGER;
 @Table(name = "genres")
 public class GenreJpaEntity {
 
+
+    @Id
     @Column(name = "id", nullable = false)
     private String id;
 

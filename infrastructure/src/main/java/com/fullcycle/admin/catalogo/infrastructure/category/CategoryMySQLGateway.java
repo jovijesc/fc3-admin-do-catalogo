@@ -10,6 +10,7 @@ import com.fullcycle.admin.catalogo.infrastructure.category.persistence.Category
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -18,7 +19,7 @@ import java.util.Optional;
 
 import static com.fullcycle.admin.catalogo.infrastructure.utils.SpecificationUtils.like;
 
-@Service
+@Component
 public class CategoryMySQLGateway implements CategoryGateway {
 
     private final CategoryRepository repository;
