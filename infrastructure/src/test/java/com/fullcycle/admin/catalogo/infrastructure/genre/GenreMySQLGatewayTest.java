@@ -429,11 +429,11 @@ public class GenreMySQLGatewayTest {
 
     @ParameterizedTest
     @CsvSource({
-        "aç,0,10,1,1,Ação",
-        "dr,0,10,1,1,Drama",
-        "com,0,10,1,1,Comédia Romântica",
-        "cien,0,10,1,1,Ficção Científica",
-        "terr,0,10,1,1,Terror",
+            "aç,0,10,1,1,Ação",
+            "dr,0,10,1,1,Drama",
+            "com,0,10,1,1,Comédia romântica",
+            "cien,0,10,1,1,Ficção científica",
+            "terr,0,10,1,1,Terror",
     })
     public void givenAValidTerm_whenCallFindAll_shouldReturnFiltered(
             final String expectedTerms,
@@ -466,9 +466,9 @@ public class GenreMySQLGatewayTest {
     @ParameterizedTest
     @CsvSource({
             "name,asc,0,10,5,5,Ação",
-            "name,desc,0,10,5,5,Drama",
-            "createdAt,asc,0,10,5,5,Comédia Romântica",
-            "createdAt,desc,0,10,5,5,Ficção Científica",
+            "name,desc,0,10,5,5,Terror",
+            "createdAt,asc,0,10,5,5,Comédia romântica",
+            "createdAt,desc,0,10,5,5,Ficção científica",
     })
     public void givenAValidSortAndDirection_whenCallFindAll_shouldReturnFiltered(
             final String expectedSort,
@@ -500,8 +500,8 @@ public class GenreMySQLGatewayTest {
 
     @ParameterizedTest
     @CsvSource({
-            "0,2,2,5,Ação;Comédia Romântica",
-            "1,2,2,5,Drama;Ficção Científica",
+            "0,2,2,5,Ação;Comédia romântica",
+            "1,2,2,5,Drama;Ficção científica",
             "2,2,1,5,Terror",
     })
     public void givenAValidSortAndDirection_whenCallFindAll_shouldReturnFiltered(
@@ -540,11 +540,11 @@ public class GenreMySQLGatewayTest {
 
     private void mockGenres() {
         genreRepository.saveAllAndFlush(List.of(
-                GenreJpaEntity.from(Genre.newGenre("Comédia Romântica", true)),
+                GenreJpaEntity.from(Genre.newGenre("Comédia romântica", true)),
                 GenreJpaEntity.from(Genre.newGenre("Ação", true)),
                 GenreJpaEntity.from(Genre.newGenre("Drama", true)),
                 GenreJpaEntity.from(Genre.newGenre("Terror", true)),
-                GenreJpaEntity.from(Genre.newGenre("Ficção Científica", true))
+                GenreJpaEntity.from(Genre.newGenre("Ficção científica", true))
         ));
     }
 

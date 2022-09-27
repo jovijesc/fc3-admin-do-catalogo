@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static com.fullcycle.admin.catalogo.infrastructure.utils.SpecificationUtils.like;
 
@@ -64,11 +65,7 @@ public class CategoryMySQLGateway implements CategoryGateway {
         // Dynamic Search by the terms(name or description)
         final var specifications = Optional.ofNullable(aQuery.terms())
                 .filter(str -> !str.isBlank())
-                .map(str -> {
-                    final Specification<CategoryJpaEntity> nameLike = like("name", str);
-                    final Specification<CategoryJpaEntity> descriptionLike = like("description", str);
-                    return nameLike.or(descriptionLike);
-                })
+                .map(this::assembleSpecification)
                 .orElse(null);
 
 
@@ -90,5 +87,11 @@ public class CategoryMySQLGateway implements CategoryGateway {
 
     private Category save(final Category aCategory) {
         return this.repository.save(CategoryJpaEntity.from(aCategory)).toAggregate();
+    }
+
+    private Specification<CategoryJpaEntity> assembleSpecification(final String str) {
+        final Specification<CategoryJpaEntity> nameLike = like("name", str);
+        final Specification<CategoryJpaEntity> descriptionLike = like("description", str);
+        return nameLike.or(descriptionLike);
     }
 }
