@@ -64,7 +64,6 @@ public class GenreMySQLGatewayTest {
 
         final var persistedGenre = genreRepository.findById(expectedId.getValue()).get();
 
-        Assertions.assertEquals(expectedId, persistedGenre.getId());
         Assertions.assertEquals(expectedName, persistedGenre.getName());
         Assertions.assertEquals(expectedIsActive, persistedGenre.isActive());
         Assertions.assertEquals(expectedCategories, persistedGenre.getCategoryIDs());
@@ -102,7 +101,6 @@ public class GenreMySQLGatewayTest {
 
         final var persistedGenre = genreRepository.findById(expectedId.getValue()).get();
 
-        Assertions.assertEquals(expectedId, persistedGenre.getId());
         Assertions.assertEquals(expectedName, persistedGenre.getName());
         Assertions.assertEquals(expectedIsActive, persistedGenre.isActive());
         Assertions.assertEquals(expectedCategories, persistedGenre.getCategoryIDs());
