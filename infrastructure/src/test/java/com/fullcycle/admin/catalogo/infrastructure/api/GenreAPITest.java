@@ -96,7 +96,7 @@ public class GenreAPITest {
                 .andDo(print());
 
         // then
-        response.andExpect(status().isCreated())
+        response.andExpect(status().isUnprocessableEntity())
                 .andExpect(header().string("Location", nullValue()))
                 .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.errors", hasSize(1)))
