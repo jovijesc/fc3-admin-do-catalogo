@@ -4,9 +4,11 @@ import com.fullcycle.admin.catalogo.application.genre.create.CreateGenreCommand;
 import com.fullcycle.admin.catalogo.application.genre.create.CreateGenreUseCase;
 import com.fullcycle.admin.catalogo.application.genre.delete.DeleteGenreUseCase;
 import com.fullcycle.admin.catalogo.application.genre.retrieve.get.GetGenreByIdUseCase;
+import com.fullcycle.admin.catalogo.application.genre.retrieve.list.ListGenreUseCase;
 import com.fullcycle.admin.catalogo.application.genre.update.UpdateGenreCommand;
 import com.fullcycle.admin.catalogo.application.genre.update.UpdateGenreUseCase;
 import com.fullcycle.admin.catalogo.domain.pagination.Pagination;
+import com.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
 import com.fullcycle.admin.catalogo.infrastructure.api.GenreAPI;
 import com.fullcycle.admin.catalogo.infrastructure.genre.models.CreateGenreRequest;
 import com.fullcycle.admin.catalogo.infrastructure.genre.models.GenreListResponse;
@@ -24,16 +26,19 @@ public class GenreController implements GenreAPI {
 
     private final CreateGenreUseCase createGenreUseCase;
     private final GetGenreByIdUseCase getGenreByIdUseCase;
+    private final ListGenreUseCase listGenreUseCase;
     private final UpdateGenreUseCase updateGenreUseCase;
     private final DeleteGenreUseCase deleteGenreUseCase;
 
     public GenreController(
             final CreateGenreUseCase createGenreUseCase,
             final GetGenreByIdUseCase getGenreByIdUseCase,
+            final ListGenreUseCase listGenreUseCase,
             final UpdateGenreUseCase updateGenreUseCase,
             final DeleteGenreUseCase deleteGenreUseCase) {
         this.createGenreUseCase = Objects.requireNonNull(createGenreUseCase);
         this.getGenreByIdUseCase = Objects.requireNonNull(getGenreByIdUseCase);
+        this.listGenreUseCase = Objects.requireNonNull(listGenreUseCase);
         this.updateGenreUseCase = Objects.requireNonNull(updateGenreUseCase);
         this.deleteGenreUseCase = Objects.requireNonNull(deleteGenreUseCase);
     }
@@ -58,7 +63,8 @@ public class GenreController implements GenreAPI {
             final int perPage,
             final String sort,
             final String direction) {
-        return null;
+        return this.listGenreUseCase.execute(new SearchQuery(page, perPage, search, sort, direction))
+                .map(GenreApiPresenter::present);
     }
 
     @Override
