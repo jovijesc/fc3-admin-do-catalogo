@@ -205,7 +205,7 @@ public class GenreAPITest {
                 .thenReturn(UpdateGenreOutput.from(aGenre));
 
         // when
-        final var aRequest = put("/genres/{id}" + expectedId)
+        final var aRequest = put("/genres/{id}", expectedId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.mapper.writeValueAsString(aCommand));
 
@@ -232,7 +232,7 @@ public class GenreAPITest {
         final var expectedIsActive = true;
         final var expectedErrorMessage = "'name' should not be null";
 
-        final var aGenre = Genre.newGenre(expectedName, expectedIsActive);
+        final var aGenre = Genre.newGenre("Ação", expectedIsActive);
         final var expectedId = aGenre.getId().getValue();
 
         final var aCommand =
