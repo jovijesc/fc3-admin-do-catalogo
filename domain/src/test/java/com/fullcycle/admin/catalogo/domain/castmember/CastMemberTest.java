@@ -96,7 +96,7 @@ public class CastMemberTest {
 
     @Test
     public void ginveAValidCastMember_whenCallUpdate_shouldReceiveUpdated() {
-        final var expectedName = " ";
+        final var expectedName = "Vin Diesel";
         final var expectedType = CastMemberType.ACTOR;
 
         final var actualMember = CastMember.newMember("vind", CastMemberType.DIRECTOR);
@@ -104,7 +104,7 @@ public class CastMemberTest {
         Assertions.assertNotNull(actualMember);
         Assertions.assertNotNull(actualMember.getId());
 
-        final var actualID = actualMember.getId());
+        final var actualID = actualMember.getId();
         final var actualCreatedAt = actualMember.getCreatedAt();
         final var actualUpdatedAt = actualMember.getUpdatedAt();
 
