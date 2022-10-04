@@ -55,7 +55,7 @@ public class ListCastMemberUseCaseTest extends UseCaseTest {
             expectedPage,
             expectedPerPage,
             expectedTotal,
-            expectedItems
+            members
         );
 
         when(castMemberGateway.findAll(any()))
@@ -86,13 +86,14 @@ public class ListCastMemberUseCaseTest extends UseCaseTest {
         final var expectedDirection = "asc";
         final var expectedTotal = 0;
 
+        final var members = List.<CastMember>of();
         final var expectedItems = List.<CastMemberListOutput>of();
 
         final var expectedPagination = new Pagination<>(
                 expectedPage,
                 expectedPerPage,
                 expectedTotal,
-                expectedItems
+                members
         );
 
         when(castMemberGateway.findAll(any()))
