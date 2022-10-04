@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface CastMemberGateway {
 
-    Genre create(CastMember aCastMember);
+    CastMember create(CastMember aCastMember);
 
     void deleteById(CastMemberID anId);
 

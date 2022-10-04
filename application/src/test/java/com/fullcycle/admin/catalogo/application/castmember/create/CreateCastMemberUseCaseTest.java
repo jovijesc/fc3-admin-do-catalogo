@@ -36,7 +36,7 @@ public class CreateCastMemberUseCaseTest extends UseCaseTest {
         final var expectedName = Fixture.name();
         final var expectedType = Fixture.CastMember.type();
 
-        final var aCommand = CreatecastMemberCommand.with(expectedName, expectedType);
+        final var aCommand = CreateCastMemberCommand.with(expectedName, expectedType);
 
         when(castMemberGateway.create(any()))
                 .thenAnswer(returnsFirstArg());
