@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.Objects;
@@ -36,7 +35,7 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
     }
 
     @Test
-    public void givenAValidCommand_whenCallsUpdateCastMember_shouldREturnItsIdentifier() {
+    public void givenAValidCommand_whenCallsUpdateCastMember_shouldReturnItsIdentifier() {
         // given
         final var aMember = CastMember.newMember("vin diesel", CastMemberType.DIRECTOR);
 
@@ -51,7 +50,7 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
         );
 
         when(castMemberGateway.findById(any()))
-                .thenReturn(Optional.of(aMember));
+                .thenReturn(Optional.of(CastMember.with(aMember)));
 
         when(castMemberGateway.update(any()))
                 .thenAnswer(returnsFirstArg());
@@ -75,7 +74,7 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
     }
 
     @Test
-    public void givenAnInvalidName_whenCallsUpdateCastMember_shouldReturnItsIdentifier() {
+    public void givenAnInvalidName_whenCallsUpdateCastMember_shouldThrowsNotificationException() {
         // given
         final var aMember = CastMember.newMember("vin diesel", CastMemberType.DIRECTOR);
 
@@ -109,7 +108,7 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
     }
 
     @Test
-    public void givenAnInvalidType_whenCallsUpdateCastMember_shouldReturnItsIdentifier() {
+    public void givenAnInvalidType_whenCallsUpdateCastMember_shouldThrowsNotificationException() {
         // given
         final var aMember = CastMember.newMember("vin diesel", CastMemberType.DIRECTOR);
 
@@ -143,7 +142,7 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
     }
 
     @Test
-    public void givenAnInvalidType_whenCallsUpdateCastMember_shouldReturnItsIdentifier() {
+    public void givenAnInvalidId_whenCallsUpdateCastMember_shouldThrowsNotFoundException() {
         // given
         final var aMember = CastMember.newMember("vin diesel", CastMemberType.DIRECTOR);
 
