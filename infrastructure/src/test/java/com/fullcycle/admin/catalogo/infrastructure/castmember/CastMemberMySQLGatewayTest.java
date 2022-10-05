@@ -53,7 +53,7 @@ public class CastMemberMySQLGatewayTest {
 
         final var persistedMember = castMemberRepository.findById(expectedId.getValue()).get();
 
-        Assertions.assertEquals(expectedId, persistedMember.getId());
+        Assertions.assertEquals(expectedId.getValue(), persistedMember.getId());
         Assertions.assertEquals(expectedName, persistedMember.getName());
         Assertions.assertEquals(expectedType, persistedMember.getType());
         Assertions.assertEquals(aMember.getCreatedAt(), persistedMember.getCreatedAt());
