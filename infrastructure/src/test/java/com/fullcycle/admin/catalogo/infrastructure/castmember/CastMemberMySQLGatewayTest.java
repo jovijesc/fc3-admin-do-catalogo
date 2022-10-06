@@ -174,7 +174,7 @@ public class CastMemberMySQLGatewayTest {
         final var actualMember = castMemberGateway.findById(CastMemberID.from("123"));
 
         // then
-        Assertions.assertFalse(actualMember.isEmpty());
+        Assertions.assertTrue(actualMember.isEmpty());
 
     }
 
@@ -205,7 +205,7 @@ public class CastMemberMySQLGatewayTest {
     @CsvSource({
             "vin,0,10,1,1,Vin Diesel",
             "taran,0,10,1,1,Quentin Tarantino",
-            "jas,0,10,1,1,Jason Mamoa",
+            "jas,0,10,1,1,Jason Momoa",
             "har,0,10,1,1,Kit Harington",
             "mar,0,10,1,1,Martin Scorsese",
     })
@@ -275,9 +275,9 @@ public class CastMemberMySQLGatewayTest {
 
     @ParameterizedTest
     @CsvSource({
-            "0,2,5,2,Jason Momoa;Kit Harington",
-            "1,2,5,2,Martin Scorsese;Quentin Tarantino",
-            "2,2,5,1,Vin Diesel",
+            "0,2,2,5,Jason Momoa;Kit Harington",
+            "1,2,2,5,Martin Scorsese;Quentin Tarantino",
+            "2,2,1,5,Vin Diesel",
     })
     public void givenAValidPagination_whenCallsFindAll_shouldReturnPaginated(
             final int expectedPage,
