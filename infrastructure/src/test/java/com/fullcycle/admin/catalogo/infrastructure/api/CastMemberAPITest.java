@@ -8,6 +8,7 @@ import com.fullcycle.admin.catalogo.application.castmember.create.DefaultCreateC
 import com.fullcycle.admin.catalogo.application.castmember.delete.DefaultDeleteCastMemberUseCase;
 import com.fullcycle.admin.catalogo.application.castmember.retrieve.get.CastMemberOutput;
 import com.fullcycle.admin.catalogo.application.castmember.retrieve.get.DefaultGetCastMemberByIdUseCase;
+import com.fullcycle.admin.catalogo.application.castmember.retrieve.list.CastMemberListOutput;
 import com.fullcycle.admin.catalogo.application.castmember.retrieve.list.DefaultListCastMemberUseCase;
 import com.fullcycle.admin.catalogo.application.castmember.update.DefaultUpdateCastMemberUseCase;
 import com.fullcycle.admin.catalogo.application.castmember.update.UpdateCastMemberOutput;
@@ -26,6 +27,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.List;
 import java.util.Objects;
 
 import static org.hamcrest.Matchers.*;
@@ -308,4 +310,92 @@ public class CastMemberAPITest {
         verify(deleteCastMemberUseCase).execute(eq(expectedId));
     }
 
+    @Test
+    public void givenValidParams_whenCallsListCastMembers_shouldReturnIt() throws Exception {
+        // given
+        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+
+        final var expectedPage = 1;
+        final var expectedPerPage = 20;
+        final var expectedTerms = "Alg";
+        final var expectedSort = "type";
+        final var expectedDirection = "desc";
+
+        final var expectedItemsCount = 1;
+        final var expectedTotal = 1;
+
+        final var expectedItems = List.of(CastMemberListOutput.from(aMember));
+
+        // when
+        final var aRequest = get("/cast_members")
+                .queryParam("page", String.valueOf(expectedPage))
+                .queryParam("perPage", String.valueOf(expectedPerPage))
+                .queryParam("search", expectedTerms)
+                .queryParam("sort", expectedSort)
+                .queryParam("dir", expectedDirection)
+                .accept(MediaType.APPLICATION_JSON);
+
+        final var response = this.mvc.perform(aRequest);
+
+        // then
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.current_page", equalTo(expectedPage)))
+                .andExpect(jsonPath("$.pert_page", equalTo(expectedPerPage)))
+                .andExpect(jsonPath("$.total", equalTo(expectedTotal)))
+                .andExpect(jsonPath("$.items", hasSize(expectedItemsCount)))
+                .andExpect(jsonPath("$.items[0].id", equalTo(aMember.getId().getValue())))
+                .andExpect(jsonPath("$.items[0].name", equalTo(aMember.getName())))
+                .andExpect(jsonPath("$.items[0].type", equalTo(aMember.getType().name())))
+                .andExpect(jsonPath("$.items[0].created_at", equalTo(aMember.getCreatedAt().toString())));
+
+        verify(listCastMemberUseCase).execute(argThat(aQuery ->
+                Objects.equals(expectedPage, aQuery.page())
+                && Objects.equals(expectedPerPage, aQuery.perPage())
+                && Objects.equals(expectedTerms, aQuery.terms())
+                && Objects.equals(expectedSort, aQuery.sort())
+                && Objects.equals(expectedDirection, aQuery.direction())
+        ));
+    }
+
+    @Test
+    public void givenEmptyParams_whenCallsListCastMembers_shouldUseDefaultsAndReturnIt() throws Exception {
+        // given
+        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+
+        final var expectedPage = 0;
+        final var expectedPerPage = 10;
+        final var expectedTerms = "";
+        final var expectedSort = "name";
+        final var expectedDirection = "asc";
+
+        final var expectedItemsCount = 1;
+        final var expectedTotal = 1;
+
+        final var expectedItems = List.of(CastMemberListOutput.from(aMember));
+
+        // when
+        final var aRequest = get("/cast_members")
+                .accept(MediaType.APPLICATION_JSON);
+
+        final var response = this.mvc.perform(aRequest);
+
+        // then
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.current_page", equalTo(expectedPage)))
+                .andExpect(jsonPath("$.pert_page", equalTo(expectedPerPage)))
+                .andExpect(jsonPath("$.total", equalTo(expectedTotal)))
+                .andExpect(jsonPath("$.items", hasSize(expectedItemsCount)))
+                .andExpect(jsonPath("$.items[0].id", equalTo(aMember.getId().getValue())))
+                .andExpect(jsonPath("$.items[0].name", equalTo(aMember.getName())))
+                .andExpect(jsonPath("$.items[0].type", equalTo(aMember.getType().name())))
+                .andExpect(jsonPath("$.items[0].created_at", equalTo(aMember.getCreatedAt().toString())));
+
+        verify(listCastMemberUseCase).execute(argThat(aQuery ->
+                Objects.equals(expectedPage, aQuery.page())
+                        && Objects.equals(expectedPerPage, aQuery.perPage())
+                        && Objects.equals(expectedTerms, aQuery.terms())
+                        && Objects.equals(expectedSort, aQuery.sort())
+                        && Objects.equals(expectedDirection, aQuery.direction())
+        ));
+    }
 }
