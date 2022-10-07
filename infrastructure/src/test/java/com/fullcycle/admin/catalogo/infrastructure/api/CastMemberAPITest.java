@@ -17,6 +17,7 @@ import com.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMemberType;
 import com.fullcycle.admin.catalogo.domain.exceptions.NotFoundException;
 import com.fullcycle.admin.catalogo.domain.exceptions.NotificationException;
+import com.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import com.fullcycle.admin.catalogo.domain.validation.Error;
 import com.fullcycle.admin.catalogo.infrastructure.castmember.models.CreateCastMemberRequest;
 import com.fullcycle.admin.catalogo.infrastructure.castmember.models.UpdateCastMemberRequest;
@@ -326,6 +327,9 @@ public class CastMemberAPITest {
 
         final var expectedItems = List.of(CastMemberListOutput.from(aMember));
 
+        when(listCastMemberUseCase.execute(any()))
+                .thenReturn(new Pagination<>(expectedPage, expectedPerPage, expectedTotal, expectedItems));
+
         // when
         final var aRequest = get("/cast_members")
                 .queryParam("page", String.valueOf(expectedPage))
@@ -340,7 +344,7 @@ public class CastMemberAPITest {
         // then
         response.andExpect(status().isOk())
                 .andExpect(jsonPath("$.current_page", equalTo(expectedPage)))
-                .andExpect(jsonPath("$.pert_page", equalTo(expectedPerPage)))
+                .andExpect(jsonPath("$.per_page", equalTo(expectedPerPage)))
                 .andExpect(jsonPath("$.total", equalTo(expectedTotal)))
                 .andExpect(jsonPath("$.items", hasSize(expectedItemsCount)))
                 .andExpect(jsonPath("$.items[0].id", equalTo(aMember.getId().getValue())))
@@ -373,6 +377,9 @@ public class CastMemberAPITest {
 
         final var expectedItems = List.of(CastMemberListOutput.from(aMember));
 
+        when(listCastMemberUseCase.execute(any()))
+                .thenReturn(new Pagination<>(expectedPage, expectedPerPage, expectedTotal, expectedItems));
+
         // when
         final var aRequest = get("/cast_members")
                 .accept(MediaType.APPLICATION_JSON);
@@ -382,7 +389,7 @@ public class CastMemberAPITest {
         // then
         response.andExpect(status().isOk())
                 .andExpect(jsonPath("$.current_page", equalTo(expectedPage)))
-                .andExpect(jsonPath("$.pert_page", equalTo(expectedPerPage)))
+                .andExpect(jsonPath("$.per_page", equalTo(expectedPerPage)))
                 .andExpect(jsonPath("$.total", equalTo(expectedTotal)))
                 .andExpect(jsonPath("$.items", hasSize(expectedItemsCount)))
                 .andExpect(jsonPath("$.items[0].id", equalTo(aMember.getId().getValue())))

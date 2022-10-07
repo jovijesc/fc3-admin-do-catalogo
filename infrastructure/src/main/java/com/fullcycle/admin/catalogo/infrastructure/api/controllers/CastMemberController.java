@@ -4,9 +4,13 @@ import com.fullcycle.admin.catalogo.application.castmember.create.CreateCastMemb
 import com.fullcycle.admin.catalogo.application.castmember.create.CreateCastMemberUseCase;
 import com.fullcycle.admin.catalogo.application.castmember.delete.DeleteCastMemberUseCase;
 import com.fullcycle.admin.catalogo.application.castmember.retrieve.get.GetCastMemberByIdUseCase;
+import com.fullcycle.admin.catalogo.application.castmember.retrieve.list.ListCastMemberUseCase;
 import com.fullcycle.admin.catalogo.application.castmember.update.UpdateCastMemberCommand;
 import com.fullcycle.admin.catalogo.application.castmember.update.UpdateCastMemberUseCase;
+import com.fullcycle.admin.catalogo.domain.pagination.Pagination;
+import com.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
 import com.fullcycle.admin.catalogo.infrastructure.api.CastMemberAPI;
+import com.fullcycle.admin.catalogo.infrastructure.castmember.models.CastMemberListResponse;
 import com.fullcycle.admin.catalogo.infrastructure.castmember.models.CastMemberResponse;
 import com.fullcycle.admin.catalogo.infrastructure.castmember.models.CreateCastMemberRequest;
 import com.fullcycle.admin.catalogo.infrastructure.castmember.models.UpdateCastMemberRequest;
@@ -28,15 +32,19 @@ public class CastMemberController implements CastMemberAPI {
 
     private final DeleteCastMemberUseCase deleteCastMemberUseCase;
 
+    private final ListCastMemberUseCase listCastMemberUseCase;
+
     public CastMemberController(
             final CreateCastMemberUseCase createCastMemberUseCase,
             final GetCastMemberByIdUseCase getCastMemberByIdUseCase,
             final UpdateCastMemberUseCase updateCastMemberUseCase,
-            final DeleteCastMemberUseCase deleteCastMemberUseCase) {
+            final DeleteCastMemberUseCase deleteCastMemberUseCase,
+            final ListCastMemberUseCase listCastMemberUseCase) {
         this.createCastMemberUseCase = Objects.requireNonNull(createCastMemberUseCase);
         this.getCastMemberByIdUseCase = Objects.requireNonNull(getCastMemberByIdUseCase);
         this.updateCastMemberUseCase = Objects.requireNonNull(updateCastMemberUseCase);
         this.deleteCastMemberUseCase = Objects.requireNonNull(deleteCastMemberUseCase);
+        this.listCastMemberUseCase = Objects.requireNonNull(listCastMemberUseCase);
     }
 
     @Override
@@ -51,6 +59,17 @@ public class CastMemberController implements CastMemberAPI {
     @Override
     public CastMemberResponse getById(final String id) {
         return CastMemberPresenter.present(this.getCastMemberByIdUseCase.execute(id));
+    }
+
+    @Override
+    public Pagination<CastMemberListResponse> list(
+            final String search,
+            final int page,
+            final int perPage,
+            final String sort,
+            final String direction) {
+        return this.listCastMemberUseCase.execute(new SearchQuery(page, perPage, search, sort, direction))
+                .map(CastMemberPresenter::present);
     }
 
     @Override
