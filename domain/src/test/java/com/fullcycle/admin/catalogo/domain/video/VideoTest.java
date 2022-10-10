@@ -7,6 +7,7 @@ import com.fullcycle.admin.catalogo.domain.validation.handler.ThrowsValidationHa
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
 import java.time.Year;
 import java.util.Set;
 
