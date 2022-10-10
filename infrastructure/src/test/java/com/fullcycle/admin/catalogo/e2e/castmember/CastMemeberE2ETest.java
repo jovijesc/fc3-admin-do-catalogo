@@ -2,6 +2,7 @@ package com.fullcycle.admin.catalogo.e2e.castmember;
 
 import com.fullcycle.admin.catalogo.E2ETest;
 import com.fullcycle.admin.catalogo.Fixture;
+import com.fullcycle.admin.catalogo.domain.castmember.CastMemberType;
 import com.fullcycle.admin.catalogo.e2e.MockDsl;
 import com.fullcycle.admin.catalogo.infrastructure.castmember.persistence.CastMemberRepository;
 import com.fullcycle.admin.catalogo.infrastructure.genre.persistence.GenreRepository;
@@ -82,5 +83,82 @@ public class CastMemeberE2ETest implements MockDsl {
                 .andExpect(jsonPath("$.errors[0].message", equalTo(expectedErrorMessage)));
     }
 
+    @Test
+    public void asACatalogAdminIShouldBeAbleToNavigateThroughAllMembers() throws Exception {
+        Assertions.assertEquals(0, castMemberRepository.count());
+        Assertions.assertTrue(MYSQL_CONTAINER.isRunning());
 
+        givenACastMember("Vin Diesel", CastMemberType.ACTOR);
+        givenACastMember("Quentin Tarantino", CastMemberType.DIRECTOR);
+        givenACastMember("Jason Momoa", CastMemberType.ACTOR);
+
+        listCastMembers(0, 1)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.current_page", equalTo(0)))
+                .andExpect(jsonPath("$.per_page", equalTo(1)))
+                .andExpect(jsonPath("$.total", equalTo(3)))
+                .andExpect(jsonPath("$.items", hasSize(1)))
+                .andExpect(jsonPath("$.items[0].name", equalTo("Jason Momoa")));
+
+        listCastMembers(1, 1)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.current_page", equalTo(1)))
+                .andExpect(jsonPath("$.per_page", equalTo(1)))
+                .andExpect(jsonPath("$.total", equalTo(3)))
+                .andExpect(jsonPath("$.items", hasSize(1)))
+                .andExpect(jsonPath("$.items[0].name", equalTo("Quentin Tarantino")));
+
+        listCastMembers(2, 1)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.current_page", equalTo(2)))
+                .andExpect(jsonPath("$.per_page", equalTo(1)))
+                .andExpect(jsonPath("$.total", equalTo(3)))
+                .andExpect(jsonPath("$.items", hasSize(1)))
+                .andExpect(jsonPath("$.items[0].name", equalTo("Vin Diesel")));
+
+        listCastMembers(3, 1)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.current_page", equalTo(3)))
+                .andExpect(jsonPath("$.per_page", equalTo(1)))
+                .andExpect(jsonPath("$.total", equalTo(3)))
+                .andExpect(jsonPath("$.items", hasSize(0)));
+    }
+
+    @Test
+    public void asACatalogAdminIShouldBeAbleToSearchThroughAllMembers() throws Exception {
+        Assertions.assertEquals(0, castMemberRepository.count());
+        Assertions.assertTrue(MYSQL_CONTAINER.isRunning());
+
+        givenACastMember("Vin Diesel", CastMemberType.ACTOR);
+        givenACastMember("Quentin Tarantino", CastMemberType.DIRECTOR);
+        givenACastMember("Jason Momoa", CastMemberType.ACTOR);
+
+        listCastMembers(0, 1, "vin")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.current_page", equalTo(0)))
+                .andExpect(jsonPath("$.per_page", equalTo(1)))
+                .andExpect(jsonPath("$.total", equalTo(1)))
+                .andExpect(jsonPath("$.items", hasSize(1)))
+                .andExpect(jsonPath("$.items[0].name", equalTo("Vin Diesel")));
+    }
+
+    @Test
+    public void asACatalogAdminIShouldBeAbleToSortThroughAllMembersByNameDesc() throws Exception {
+        Assertions.assertEquals(0, castMemberRepository.count());
+        Assertions.assertTrue(MYSQL_CONTAINER.isRunning());
+
+        givenACastMember("Vin Diesel", CastMemberType.ACTOR);
+        givenACastMember("Quentin Tarantino", CastMemberType.DIRECTOR);
+        givenACastMember("Jason Momoa", CastMemberType.ACTOR);
+
+        listCastMembers(0, 3, "", "name", "desc")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.current_page", equalTo(0)))
+                .andExpect(jsonPath("$.per_page", equalTo(3)))
+                .andExpect(jsonPath("$.total", equalTo(3)))
+                .andExpect(jsonPath("$.items", hasSize(3)))
+                .andExpect(jsonPath("$.items[0].name", equalTo("Vin Diesel")))
+                .andExpect(jsonPath("$.items[1].name", equalTo("Quentin Tarantino")))
+                .andExpect(jsonPath("$.items[2].name", equalTo("Jason Momoa")));
+    }
 }
