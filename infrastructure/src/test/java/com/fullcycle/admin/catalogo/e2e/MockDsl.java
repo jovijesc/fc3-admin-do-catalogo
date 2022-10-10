@@ -33,6 +33,11 @@ public interface MockDsl {
     /**
      * CastMember
      */
+
+    default ResultActions deleteACastMember(final CastMemberID anId) throws Exception {
+        return this.delete("/cast_members/", anId);
+    }
+
     default CastMemberID givenACastMember(final String aName, final CastMemberType aType) throws Exception {
         final var aRequestBody = new CreateCastMemberRequest(aName, aType);
         final var actualId = this.given("/cast_members", aRequestBody);
