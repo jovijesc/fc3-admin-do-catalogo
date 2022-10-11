@@ -219,40 +219,45 @@ public class Video extends AggregateRoot<VideoID> {
         return Optional.ofNullable(banner);
     }
 
-    public void setBanner(final ImageMedia banner) {
+    public Video setBanner(final ImageMedia banner) {
         this.banner = banner;
+        return this;
     }
 
     public Optional<ImageMedia> getThumbnail() {
         return Optional.ofNullable(thumbnail);
     }
 
-    public void setThumbnail(final ImageMedia thumbnail) {
+    public Video setThumbnail(final ImageMedia thumbnail) {
         this.thumbnail = thumbnail;
+        return this;
     }
 
     public Optional<ImageMedia> getThumbnailHalf() {
         return Optional.ofNullable(thumbnailHalf);
     }
 
-    public void setThumbnailHalf(final ImageMedia thumbnailHalf) {
+    public Video setThumbnailHalf(final ImageMedia thumbnailHalf) {
         this.thumbnailHalf = thumbnailHalf;
+        return this;
     }
 
     public Optional<AudioVideoMedia> getTrailer() {
         return Optional.ofNullable(trailer);
     }
 
-    public void setTrailer(final AudioVideoMedia trailer) {
+    public Video setTrailer(final AudioVideoMedia trailer) {
         this.trailer = trailer;
+        return this;
     }
 
     public Optional<AudioVideoMedia> getVideo() {
         return Optional.ofNullable(video);
     }
 
-    public void setVideo(final AudioVideoMedia video) {
+    public Video setVideo(final AudioVideoMedia video) {
         this.video = video;
+        return this;
     }
 
     public Set<CategoryID> getCategories() {
