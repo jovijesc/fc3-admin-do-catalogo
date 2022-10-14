@@ -5,8 +5,11 @@ import com.fullcycle.admin.catalogo.domain.castmember.CastMemberType;
 import com.fullcycle.admin.catalogo.domain.category.Category;
 import com.fullcycle.admin.catalogo.domain.genre.Genre;
 import com.fullcycle.admin.catalogo.domain.video.Rating;
+import com.fullcycle.admin.catalogo.domain.video.Resource;
 import com.github.javafaker.Faker;
 import io.vavr.API;
+
+import java.util.Arrays;
 
 import static io.vavr.API.*;
 import static io.vavr.API.Match.Case;
@@ -88,13 +91,13 @@ public final class Fixture {
 
         public static Resource resource(final Resource.Type type) {
             final String contentType = Match(type).of(
-                    Case($(List(Type.VIDEO, Type.TRAILER)), "video/mp4"),
+                    Case($(List(Resource.Type.VIDEO, Resource.Type.TRAILER)::contains), "video/mp4"),
                     Case($(), "image/jpg")
             );
 
             final byte[] content = "Conteudo".getBytes();
 
-            return Resource.of(content, contentType, type.name().toLowerCase(), type);
+            return Resource.with(content, contentType, type.name().toLowerCase(), type);
         }
 
 
