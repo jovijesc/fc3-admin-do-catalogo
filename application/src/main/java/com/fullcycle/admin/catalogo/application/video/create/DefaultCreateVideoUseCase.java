@@ -132,7 +132,7 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
     }
 
     private ValidationHandler validateMembers(final Set<CastMemberID> ids) {
-        return validateAggregate("cast members", ids, castMemberGateway::existsByIds);
+        return validateAggregate("cast castMembers", ids, castMemberGateway::existsByIds);
     }
 
     private <T extends Identifier> ValidationHandler validateAggregate(

@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.time.Year;
 import java.util.*;
@@ -78,17 +77,17 @@ public class GetVideoByIdUseCaseTest extends UseCaseTest  {
         final var actualVideo = this.useCase.execute(expectedId.getValue());
 
         // then
-        Assertions.assertEquals(expectedId, actualVideo.id());
+        Assertions.assertEquals(expectedId.getValue(), actualVideo.id());
         Assertions.assertEquals(expectedTitle, actualVideo.title());
         Assertions.assertEquals(expectedDescription, actualVideo.description());
-        Assertions.assertEquals(expectedLauncYear, actualVideo.launchedAt());
+        Assertions.assertEquals(expectedLauncYear.getValue(), actualVideo.launchedAt());
         Assertions.assertEquals(expectedDuration, actualVideo.duration());
         Assertions.assertEquals(expectedOpened, actualVideo.opened());
         Assertions.assertEquals(expectedPublished, actualVideo.published());
         Assertions.assertEquals(expectedRating, actualVideo.rating());
-        Assertions.assertEquals(expectedCategories, actualVideo.categories());
-        Assertions.assertEquals(expectedGenres, actualVideo.genres());
-        Assertions.assertEquals(expectedMembers, actualVideo.castMembers());
+        Assertions.assertEquals(asString(expectedCategories), actualVideo.categories());
+        Assertions.assertEquals(asString(expectedGenres), actualVideo.genres());
+        Assertions.assertEquals(asString(expectedMembers), actualVideo.castMembers());
         Assertions.assertEquals(expectedVideo, actualVideo.video());
         Assertions.assertEquals(expectedTrailer, actualVideo.trailer());
         Assertions.assertEquals(expectedBanner, actualVideo.banner());
@@ -101,7 +100,7 @@ public class GetVideoByIdUseCaseTest extends UseCaseTest  {
     @Test
     public void givenInvalidId_whenCallsGetVideo_shouldReturnNotFound() {
         // given
-        final var expectedErrorMessage = "Video with ID 123 not found";
+        final var expectedErrorMessage = "Video with ID 123 was not found";
 
         final var expectedId = VideoID.from("123");
 

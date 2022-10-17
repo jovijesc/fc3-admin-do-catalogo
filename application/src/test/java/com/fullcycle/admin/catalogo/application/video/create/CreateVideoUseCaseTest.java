@@ -849,7 +849,7 @@ public class CreateVideoUseCaseTest extends UseCaseTest {
         // given
         final var wesleyId = Fixture.CastMembers.wesley().getId();
 
-        final var expectedErrorMessage = "Some cast members could not be found: %s".formatted(wesleyId.getValue());
+        final var expectedErrorMessage = "Some cast castMembers could not be found: %s".formatted(wesleyId.getValue());
         final var expectedErrorCount = 1;
         final var expectedTitle = Fixture.title();
         final var expectedDescription = Fixture.Videos.description();

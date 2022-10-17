@@ -40,7 +40,7 @@ public interface CastMemberAPI {
     CastMemberResponse getById(@PathVariable String id);
 
     @GetMapping
-    @Operation(summary = "List all cast members paginated")
+    @Operation(summary = "List all cast castMembers paginated")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Listed successfully"),
             @ApiResponse(responseCode = "422", description = "An invalid parameter was received"),
