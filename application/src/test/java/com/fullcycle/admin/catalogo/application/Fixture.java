@@ -45,6 +45,21 @@ public final class Fixture {
         );
     }
 
+    public static Video video() {
+        return Video.newVideo(
+                Fixture.title(),
+                Videos.description(),
+                Year.of(Fixture.year()),
+                Fixture.duration(),
+                Fixture.bool(),
+                Fixture.bool(),
+                Videos.rating(),
+                Set.of(Categories.aulas().getId()),
+                Set.of(Genres.tech().getId()),
+                Set.of(CastMembers.wesley().getId(), CastMembers.paulo().getId())
+        );
+    }
+
     public static final class Categories {
 
         private static final Category AULAS =
@@ -88,19 +103,21 @@ public final class Fixture {
 
     public static final class Videos {
 
+        private static final Video SYSTEM_DESIGN = Video.newVideo(
+                "System Design na prática",
+                description(),
+                Year.of(2022),
+                Fixture.duration(),
+                Fixture.bool(),
+                Fixture.bool(),
+                rating(),
+                Set.of(Categories.aulas().getId()),
+                Set.of(Genres.tech().getId()),
+                Set.of(CastMembers.wesley().getId(), CastMembers.paulo().getId())
+        );
+
         public static Video systemDesign() {
-            return Video.newVideo(
-                    Fixture.title(),
-                    description(),
-                    Year.of(Fixture.year()),
-                    Fixture.duration(),
-                    Fixture.bool(),
-                    Fixture.bool(),
-                    rating(),
-                    Set.of(Categories.aulas().getId()),
-                    Set.of(Genres.tech().getId()),
-                    Set.of(CastMembers.wesley().getId(), CastMembers.paulo().getId())
-            );
+            return Video.with(SYSTEM_DESIGN);
         }
 
         public static Rating rating() {
