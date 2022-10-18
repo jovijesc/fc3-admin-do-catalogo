@@ -6,10 +6,13 @@ import com.fullcycle.admin.catalogo.domain.category.Category;
 import com.fullcycle.admin.catalogo.domain.genre.Genre;
 import com.fullcycle.admin.catalogo.domain.video.Rating;
 import com.fullcycle.admin.catalogo.domain.video.Resource;
+import com.fullcycle.admin.catalogo.domain.video.Video;
 import com.github.javafaker.Faker;
 import io.vavr.API;
 
+import java.time.Year;
 import java.util.Arrays;
+import java.util.Set;
 
 import static io.vavr.API.*;
 import static io.vavr.API.Match.Case;
@@ -84,6 +87,21 @@ public final class Fixture {
     }
 
     public static final class Videos {
+
+        public static Video systemDesign() {
+            return Video.newVideo(
+                    Fixture.title(),
+                    description(),
+                    Year.of(Fixture.year()),
+                    Fixture.duration(),
+                    Fixture.bool(),
+                    Fixture.bool(),
+                    rating(),
+                    Set.of(Categories.aulas().getId()),
+                    Set.of(Genres.tech().getId()),
+                    Set.of(CastMembers.wesley().getId(), CastMembers.paulo().getId())
+            );
+        }
 
         public static Rating rating() {
             return FAKER.options().option(Rating.values());
