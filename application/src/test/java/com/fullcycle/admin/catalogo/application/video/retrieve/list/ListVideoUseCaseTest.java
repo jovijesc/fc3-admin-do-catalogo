@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 public class ListVideoUseCaseTest extends UseCaseTest {
 
     @InjectMocks
-    private DefaultListVideosUseCaseTest useCase;
+    private DefaultListVideosUseCase useCase;
 
     @Mock
     private VideoGateway videoGateway;
