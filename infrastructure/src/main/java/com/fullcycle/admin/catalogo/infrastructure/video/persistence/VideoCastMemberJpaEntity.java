@@ -1,33 +1,35 @@
 package com.fullcycle.admin.catalogo.infrastructure.video.persistence;
 
-import com.fullcycle.admin.catalogo.domain.category.CategoryID;
+
+
+import com.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
 
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
 
-@Entity(name = "VideoCategory")
-@Table(name = "videos_categories")
-public class VideoCategoryJpaEntity {
+@Entity(name = "VideoCastMember")
+@Table(name = "videos_cast_members")
+public class VideoCastMemberJpaEntity {
 
     @EmbeddedId
-    private VideoCategoryID id;
+    private VideoCastMemberID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("videoId")
     private VideoJpaEntity video;
 
-    public VideoCategoryJpaEntity() {
+    public VideoCastMemberJpaEntity() {
     }
 
-    private VideoCategoryJpaEntity(final VideoCategoryID id, final VideoJpaEntity video) {
+    private VideoCastMemberJpaEntity(final VideoCastMemberID id, final VideoJpaEntity video) {
         this.id = id;
         this.video = video;
     }
 
-    public static VideoCategoryJpaEntity from(final VideoJpaEntity video, CategoryID category) {
-        return new VideoCategoryJpaEntity(
-                VideoCategoryID.from(video.getId(), UUID.fromString(category.getValue())),
+    public static VideoCastMemberJpaEntity from(final VideoJpaEntity video, CastMemberID castMember) {
+        return new VideoCastMemberJpaEntity(
+                VideoCastMemberID.from(video.getId(), UUID.fromString(castMember.getValue())),
                 video
         );
     }
@@ -36,7 +38,7 @@ public class VideoCategoryJpaEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        VideoCategoryJpaEntity that = (VideoCategoryJpaEntity) o;
+        VideoCastMemberJpaEntity that = (VideoCastMemberJpaEntity) o;
         return Objects.equals(getId(), that.getId()) && Objects.equals(getVideo(), that.getVideo());
     }
 
@@ -45,11 +47,11 @@ public class VideoCategoryJpaEntity {
         return Objects.hash(getId(), getVideo());
     }
 
-    public VideoCategoryID getId() {
+    public VideoCastMemberID getId() {
         return id;
     }
 
-    public void setId(VideoCategoryID id) {
+    public void setId(VideoCastMemberID id) {
         this.id = id;
     }
 

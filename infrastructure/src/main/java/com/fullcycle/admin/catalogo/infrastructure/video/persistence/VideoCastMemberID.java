@@ -7,37 +7,37 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Embeddable
-public class VideoGenreID implements Serializable {
+public class VideoCastMemberID implements Serializable {
 
     @Column(name = "video_id", nullable = false)
     private UUID videoId;
 
-    @Column(name = "genre_id", nullable = false)
-    private UUID genreId;
+    @Column(name = "cast_member_id", nullable = false)
+    private UUID castMemberId;
 
-    public VideoGenreID() {
+    public VideoCastMemberID() {
     }
 
-    private VideoGenreID(final UUID videoId, final UUID genreId) {
+    private VideoCastMemberID(final UUID videoId, final UUID castMemberId) {
         this.videoId = videoId;
-        this.genreId = genreId;
+        this.castMemberId = castMemberId;
     }
 
-    public static VideoGenreID from(final UUID videoId, final UUID genreId) {
-        return new VideoGenreID(videoId, genreId);
+    public static VideoCastMemberID from(final UUID videoId, final UUID castMemberId) {
+        return new VideoCastMemberID(videoId, castMemberId);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        VideoGenreID that = (VideoGenreID) o;
-        return Objects.equals(getVideoId(), that.getVideoId()) && Objects.equals(getGenreId(), that.getGenreId());
+        VideoCastMemberID that = (VideoCastMemberID) o;
+        return Objects.equals(getVideoId(), that.getVideoId()) && Objects.equals(getCastMemberId(), that.getCastMemberId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getVideoId(), getGenreId());
+        return Objects.hash(getVideoId(), getCastMemberId());
     }
 
     public UUID getVideoId() {
@@ -48,11 +48,11 @@ public class VideoGenreID implements Serializable {
         this.videoId = videoId;
     }
 
-    public UUID getGenreId() {
-        return genreId;
+    public UUID getCastMemberId() {
+        return castMemberId;
     }
 
-    public void setGenreId(UUID genreId) {
-        this.genreId = genreId;
+    public void setCastMemberId(UUID castMemberId) {
+        this.castMemberId = castMemberId;
     }
 }
