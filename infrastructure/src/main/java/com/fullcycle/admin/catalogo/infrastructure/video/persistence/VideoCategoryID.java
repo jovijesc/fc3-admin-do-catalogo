@@ -1,5 +1,6 @@
 package com.fullcycle.admin.catalogo.infrastructure.video.persistence;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
@@ -8,8 +9,10 @@ import java.util.UUID;
 @Embeddable
 public class VideoCategoryID implements Serializable {
 
+    @Column(name = "video_id", nullable = false)
     private UUID videoId;
 
+    @Column(name = "category_id", nullable = false)
     private UUID categoryId;
 
     public VideoCategoryID() {
