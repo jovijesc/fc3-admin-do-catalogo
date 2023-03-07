@@ -4,11 +4,10 @@ import com.fullcycle.admin.catalogo.domain.video.AudioVideoMedia;
 import com.fullcycle.admin.catalogo.domain.video.MediaStatus;
 
 import javax.persistence.*;
-import java.util.UUID;
 
-@Entity(name = "AudioVideoMEdia")
+@Entity(name = "AudioVideoMedia")
 @Table(name = "videos_video_media")
-public class AudioVideoMEdiaJpaEntity {
+public class AudioVideoMediaJpaEntity {
 
     @Id
     private String id;
@@ -16,19 +15,19 @@ public class AudioVideoMEdiaJpaEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "file_path", nullable = false)
     private String filePath;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "encoded_path", nullable = false)
     private String encodePath;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private MediaStatus status;
 
-    public AudioVideoMEdiaJpaEntity() {}
+    public AudioVideoMediaJpaEntity() {}
 
-    private AudioVideoMEdiaJpaEntity(
+    private AudioVideoMediaJpaEntity(
             final String id,
             final String name,
             final String filePath,
@@ -41,8 +40,8 @@ public class AudioVideoMEdiaJpaEntity {
         this.status = status;
     }
 
-    public static AudioVideoMEdiaJpaEntity from(final AudioVideoMedia media) {
-        return new AudioVideoMEdiaJpaEntity(
+    public static AudioVideoMediaJpaEntity from(final AudioVideoMedia media) {
+        return new AudioVideoMediaJpaEntity(
                 media.checksum(),
                 media.name(),
                 media.rawLocation(),

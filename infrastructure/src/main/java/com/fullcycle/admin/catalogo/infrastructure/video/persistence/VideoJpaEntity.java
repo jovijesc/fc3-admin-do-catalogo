@@ -21,7 +21,8 @@ import java.util.stream.Collectors;
 public class VideoJpaEntity {
 
     @Id
-    private UUID id;
+    @Column(name = "id", nullable = false)
+    private String id;
 
     @Column(name = "title", nullable = false)
     private String title;
@@ -53,11 +54,11 @@ public class VideoJpaEntity {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "video_id")
-    private AudioVideoMEdiaJpaEntity video;
+    private AudioVideoMediaJpaEntity video;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "trailer_id")
-    private AudioVideoMEdiaJpaEntity trailer;
+    private AudioVideoMediaJpaEntity trailer;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "banner_id")
@@ -83,7 +84,7 @@ public class VideoJpaEntity {
     public VideoJpaEntity() {}
 
     private VideoJpaEntity(
-            final UUID id,
+            final String id,
             final String title,
             final String description,
             final int yearLaunched,
@@ -93,8 +94,8 @@ public class VideoJpaEntity {
             final double duration,
             final Instant createdAt,
             final Instant updatedAt,
-            final AudioVideoMEdiaJpaEntity video,
-            final AudioVideoMEdiaJpaEntity trailer,
+            final AudioVideoMediaJpaEntity video,
+            final AudioVideoMediaJpaEntity trailer,
             final ImageMediaJpaEntity banner,
             final ImageMediaJpaEntity thumbnail,
             final ImageMediaJpaEntity thumbnailHalf) {
@@ -120,7 +121,7 @@ public class VideoJpaEntity {
 
     public static VideoJpaEntity from(final Video aVideo) {
         final var entity = new VideoJpaEntity(
-                UUID.fromString(aVideo.getId().getValue()),
+                aVideo.getId().getValue(),
                 aVideo.getTitle(),
                 aVideo.getDescription(),
                 aVideo.getLaunchedAt().getValue(),
@@ -131,10 +132,10 @@ public class VideoJpaEntity {
                 aVideo.getCreatedAt(),
                 aVideo.getUpdatedAt(),
                 aVideo.getVideo()
-                        .map(AudioVideoMEdiaJpaEntity::from)
+                        .map(AudioVideoMediaJpaEntity::from)
                         .orElse(null),
                 aVideo.getTrailer()
-                        .map(AudioVideoMEdiaJpaEntity::from)
+                        .map(AudioVideoMediaJpaEntity::from)
                         .orElse(null),
                 aVideo.getBanner()
                         .map(ImageMediaJpaEntity::from)
@@ -180,10 +181,10 @@ public class VideoJpaEntity {
                         .map(ImageMediaJpaEntity::toDomain)
                         .orElse(null),
                 Optional.ofNullable(getTrailer())
-                        .map(AudioVideoMEdiaJpaEntity::toDomain)
+                        .map(AudioVideoMediaJpaEntity::toDomain)
                         .orElse(null),
                 Optional.ofNullable(getVideo())
-                        .map(AudioVideoMEdiaJpaEntity::toDomain)
+                        .map(AudioVideoMediaJpaEntity::toDomain)
                         .orElse(null),
                 getCategories().stream()
                         .map(it -> CategoryID.from(it.getId().getCategoryId()))
@@ -209,11 +210,11 @@ public class VideoJpaEntity {
         this.castMembers.add(VideoCastMemberJpaEntity.from(this, anId));
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -289,19 +290,19 @@ public class VideoJpaEntity {
         this.updatedAt = updatedAt;
     }
 
-    public AudioVideoMEdiaJpaEntity getVideo() {
+    public AudioVideoMediaJpaEntity getVideo() {
         return video;
     }
 
-    public void setVideo(AudioVideoMEdiaJpaEntity video) {
+    public void setVideo(AudioVideoMediaJpaEntity video) {
         this.video = video;
     }
 
-    public AudioVideoMEdiaJpaEntity getTrailer() {
+    public AudioVideoMediaJpaEntity getTrailer() {
         return trailer;
     }
 
-    public void setTrailer(AudioVideoMEdiaJpaEntity trailer) {
+    public void setTrailer(AudioVideoMediaJpaEntity trailer) {
         this.trailer = trailer;
     }
 

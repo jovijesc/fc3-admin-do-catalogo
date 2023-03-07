@@ -27,7 +27,7 @@ public class VideoCategoryJpaEntity {
 
     public static VideoCategoryJpaEntity from(final VideoJpaEntity video, CategoryID category) {
         return new VideoCategoryJpaEntity(
-                VideoCategoryID.from(video.getId(), UUID.fromString(category.getValue())),
+                VideoCategoryID.from(video.getId(), category.getValue()),
                 video
         );
     }
