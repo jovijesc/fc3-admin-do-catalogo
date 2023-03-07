@@ -1,4 +1,4 @@
-package com.fullcycle.admin.catalogo.application;
+package com.fullcycle.admin.catalogo.domain;
 
 import com.fullcycle.admin.catalogo.domain.castmember.CastMember;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMemberType;
@@ -11,7 +11,6 @@ import com.github.javafaker.Faker;
 import io.vavr.API;
 
 import java.time.Year;
-import java.util.Arrays;
 import java.util.Set;
 
 import static io.vavr.API.*;
@@ -126,8 +125,8 @@ public final class Fixture {
 
         public static Resource resource(final Resource.Type type) {
             final String contentType = Match(type).of(
-                    Case($(List(Resource.Type.VIDEO, Resource.Type.TRAILER)::contains), "video/mp4"),
-                    Case($(), "image/jpg")
+                    API.Case($(List(Resource.Type.VIDEO, Resource.Type.TRAILER)::contains), "video/mp4"),
+                    API.Case($(), "image/jpg")
             );
 
             final byte[] content = "Conteudo".getBytes();

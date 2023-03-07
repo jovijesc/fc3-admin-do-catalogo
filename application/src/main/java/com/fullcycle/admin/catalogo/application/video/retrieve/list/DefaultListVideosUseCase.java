@@ -15,8 +15,7 @@ public class DefaultListVideosUseCase extends ListVideosUseCase{
     }
 
     @Override
-    public Pagination<VideoListOutput> execute(VideoSearchQuery aQuery) {
-        return this.videoGateway.findAll(aQuery)
-                .map(VideoListOutput::from);
+    public Pagination<VideoListOutput> execute(final VideoSearchQuery aQuery) {
+        return this.videoGateway.findAll(aQuery).map(VideoListOutput::from);
     }
 }

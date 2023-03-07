@@ -1,6 +1,5 @@
 package com.fullcycle.admin.catalogo.infrastructure.castmember;
 
-import com.fullcycle.admin.catalogo.Fixture;
 import com.fullcycle.admin.catalogo.MySQLGatewayTest;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMember;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
@@ -16,9 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.fullcycle.admin.catalogo.Fixture.CastMember.type;
-import static com.fullcycle.admin.catalogo.Fixture.name;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.fullcycle.admin.catalogo.domain.Fixture.CastMembers.type;
+import static com.fullcycle.admin.catalogo.domain.Fixture.name;
 
 @MySQLGatewayTest
 public class CastMemberMySQLGatewayTest {
