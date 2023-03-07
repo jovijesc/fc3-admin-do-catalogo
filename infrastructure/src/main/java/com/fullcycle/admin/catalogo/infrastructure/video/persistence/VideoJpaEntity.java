@@ -3,6 +3,7 @@ package com.fullcycle.admin.catalogo.infrastructure.video.persistence;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
 import com.fullcycle.admin.catalogo.domain.genre.GenreID;
+import com.fullcycle.admin.catalogo.domain.utils.CollectionUtils;
 import com.fullcycle.admin.catalogo.domain.video.Rating;
 import com.fullcycle.admin.catalogo.domain.video.Video;
 import com.fullcycle.admin.catalogo.domain.video.VideoID;
@@ -171,13 +172,13 @@ public class VideoJpaEntity {
                 getRating(),
                 getCreatedAt(),
                 getUpdatedAt(),
-                Optional.of(getBanner())
+                Optional.ofNullable(getBanner())
                         .map(ImageMediaJpaEntity::toDomain)
                         .orElse(null),
-                Optional.of(getThumbnail())
+                Optional.ofNullable(getThumbnail())
                         .map(ImageMediaJpaEntity::toDomain)
                         .orElse(null),
-                Optional.of(getThumbnailHalf())
+                Optional.ofNullable(getThumbnailHalf())
                         .map(ImageMediaJpaEntity::toDomain)
                         .orElse(null),
                 Optional.ofNullable(getTrailer())
@@ -352,5 +353,17 @@ public class VideoJpaEntity {
 
     public void setCastMembers(Set<VideoCastMemberJpaEntity> castMembers) {
         this.castMembers = castMembers;
+    }
+
+    public Set<CategoryID> getCategoriesID() {
+        return CollectionUtils.mapTo(getCategories(), it -> CategoryID.from(it.getId().getCategoryId()));
+    }
+
+    public Set<GenreID> getGenresID() {
+        return CollectionUtils.mapTo(getGenres(), it -> GenreID.from(it.getId().getGenreId()));
+    }
+
+    public Set<CastMemberID> getCastMembersID() {
+        return CollectionUtils.mapTo(getCastMembers(), it -> CastMemberID.from(it.getId().getCastMemberId()));
     }
 }
