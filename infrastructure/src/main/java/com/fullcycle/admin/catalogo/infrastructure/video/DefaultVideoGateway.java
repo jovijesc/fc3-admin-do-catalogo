@@ -27,7 +27,7 @@ public class DefaultVideoGateway implements VideoGateway {
     }
 
     @Override
-    public void deleteById(VideoID anId) {
+    public void deleteById(final VideoID anId) {
         final var aVideoId = anId.getValue();
         if(this.videoRepository.existsById(aVideoId)) {
             this.videoRepository.deleteById(aVideoId);
@@ -35,17 +35,22 @@ public class DefaultVideoGateway implements VideoGateway {
     }
 
     @Override
-    public Optional<Video> findById(VideoID anId) {
+    public Optional<Video> findById(final VideoID anId) {
         return Optional.empty();
     }
 
     @Override
-    public Video update(Video aVideo) {
-        return null;
+    @Transactional
+    public Video update(final Video aVideo) {
+        return save(aVideo);
     }
 
     @Override
-    public Pagination<Video> findAll(VideoSearchQuery aQuery) {
+    public Pagination<Video> findAll(final VideoSearchQuery aQuery) {
         return null;
+    }
+
+    private Video save(final Video aVideo) {
+        return this.videoRepository.save(VideoJpaEntity.from(aVideo)).toAggregate();
     }
 }
