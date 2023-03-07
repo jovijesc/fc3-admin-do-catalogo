@@ -9,10 +9,7 @@ import com.fullcycle.admin.catalogo.domain.category.CategoryGateway;
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
 import com.fullcycle.admin.catalogo.domain.genre.GenreGateway;
 import com.fullcycle.admin.catalogo.domain.genre.GenreID;
-import com.fullcycle.admin.catalogo.domain.video.AudioVideoMedia;
-import com.fullcycle.admin.catalogo.domain.video.ImageMedia;
-import com.fullcycle.admin.catalogo.domain.video.Resource;
-import com.fullcycle.admin.catalogo.domain.video.Video;
+import com.fullcycle.admin.catalogo.domain.video.*;
 import com.fullcycle.admin.catalogo.infrastructure.video.persistence.VideoRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -323,5 +320,57 @@ public class DefaultVideoGatewayTest {
         Assertions.assertNotNull(persistedVideo.getCreatedAt());
         Assertions.assertTrue(persistedVideo.getUpdatedAt().isAfter(aVideo.getUpdatedAt()));
 
+    }
+
+    @Test
+    public void givenAValidVideoId_whenCallsDeleteById_shouldDeleteIt() {
+        // given
+        final var aVideo = videoGateway.create(Video.newVideo(
+                Fixture.title(),
+                Fixture.Videos.description(),
+                Year.of(Fixture.year()),
+                Fixture.duration(),
+                Fixture.bool(),
+                Fixture.bool(),
+                Fixture.Videos.rating(),
+                Set.of(),
+                Set.of(),
+                Set.of()
+        ));
+
+        Assertions.assertEquals(1, videoRepository.count());
+
+        final var anId = aVideo.getId();
+
+        // when
+        videoGateway.deleteById(anId);
+
+        Assertions.assertEquals(0, videoRepository.count());
+    }
+
+    @Test
+    public void givenAnInvalidVideoId_whenCallsDeleteById_shouldDeleteIt() {
+        // given
+        final var aVideo = videoGateway.create(Video.newVideo(
+                Fixture.title(),
+                Fixture.Videos.description(),
+                Year.of(Fixture.year()),
+                Fixture.duration(),
+                Fixture.bool(),
+                Fixture.bool(),
+                Fixture.Videos.rating(),
+                Set.of(),
+                Set.of(),
+                Set.of()
+        ));
+
+        Assertions.assertEquals(1, videoRepository.count());
+
+        final var anId = VideoID.unique();
+
+        // when
+        videoGateway.deleteById(anId);
+
+        Assertions.assertEquals(1, videoRepository.count());
     }
 }
