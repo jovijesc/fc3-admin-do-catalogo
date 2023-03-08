@@ -4,9 +4,9 @@ import com.fullcycle.admin.catalogo.domain.castmember.CastMember;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMemberType;
 import com.fullcycle.admin.catalogo.domain.category.Category;
 import com.fullcycle.admin.catalogo.domain.genre.Genre;
-import com.fullcycle.admin.catalogo.domain.video.Rating;
-import com.fullcycle.admin.catalogo.domain.video.Resource;
-import com.fullcycle.admin.catalogo.domain.video.Video;
+import com.fullcycle.admin.catalogo.domain.utils.IdUtils;
+import com.fullcycle.admin.catalogo.domain.video.*;
+import com.fullcycle.admin.catalogo.domain.resource.Resource;
 import com.github.javafaker.Faker;
 import io.vavr.API;
 
@@ -14,7 +14,6 @@ import java.time.Year;
 import java.util.Set;
 
 import static io.vavr.API.*;
-import static io.vavr.API.Match.Case;
 
 public final class Fixture {
 
@@ -42,6 +41,10 @@ public final class Fixture {
                 "Não cometa esses erros ao trabalhar com microserviços",
                 "Testes de mutação. Você não testa seu software corretamente"
         );
+    }
+
+    public static String checksum() {
+        return "03fe62de";
     }
 
     public static Video video() {
@@ -137,15 +140,20 @@ public final class Fixture {
             return FAKER.options().option(Rating.values());
         }
 
-        public static Resource resource(final Resource.Type type) {
+        public static VideoMediaType mediaType() {
+            return FAKER.options().option(VideoMediaType.values());
+        }
+
+        public static Resource resource(final VideoMediaType type) {
             final String contentType = Match(type).of(
-                    API.Case($(List(Resource.Type.VIDEO, Resource.Type.TRAILER)::contains), "video/mp4"),
+                    API.Case($(List(VideoMediaType.VIDEO, VideoMediaType.TRAILER)::contains), "video/mp4"),
                     API.Case($(), "image/jpg")
             );
 
+            final String checksum = IdUtils.uuid();
             final byte[] content = "Conteudo".getBytes();
 
-            return Resource.with(content, contentType, type.name().toLowerCase(), type);
+            return Resource.with(checksum, content, contentType, type.name().toLowerCase());
         }
 
 
@@ -162,6 +170,24 @@ public final class Fixture {
                             Destinado a todos envolvidos com programação, de codificadores iniciantes a programadores experientes e gerentes responsáveis por projetos de software, 
                             apresenta lições simples que promovem rápidas melhorias na produtividade pessoal, precisão e satisfação profissional.
                             """
+            );
+        }
+
+        public static AudioVideoMedia audioVideo(final VideoMediaType type) {
+            final var checksum = Fixture.checksum();
+            return AudioVideoMedia.with(
+                    checksum,
+                    type.name().toLowerCase(),
+                    "/videos/" + checksum
+            );
+        }
+
+        public static ImageMedia imageMedia(final VideoMediaType type) {
+            final var checksum = Fixture.checksum();
+            return ImageMedia.with(
+                    checksum,
+                    type.name().toLowerCase(),
+                    "/images/" + checksum
             );
         }
     }
