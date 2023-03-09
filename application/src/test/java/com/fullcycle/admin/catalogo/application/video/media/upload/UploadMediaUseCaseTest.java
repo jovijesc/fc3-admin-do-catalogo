@@ -119,19 +119,19 @@ public class UploadMediaUseCaseTest extends UseCaseTest {
     }
 
     @Test
-    public void givenCmdToUpload_whenIsvalid_shouldUpdateBannerMediaAndPersistIt() {
+    public void givenCmdToUpload_whenIsValid_shouldUpdateBannerMediaAndPersistIt() {
         // given
         final var aVideo = Fixture.Videos.systemDesign();
         final var expectedId = aVideo.getId();
         final var expectedType = VideoMediaType.BANNER;
         final var expectedResource = Fixture.Videos.resource(expectedType);
         final var expectedVideoResource = VideoResource.with(expectedResource, expectedType);
-        final var expectedMedia = Fixture.Videos.audioVideo(expectedType);
+        final var expectedMedia = Fixture.Videos.imageMedia(expectedType);
 
         when(videoGateway.findById(any()))
                 .thenReturn(Optional.of(aVideo));
 
-        when(mediaResourceGateway.storeAudioVideo(any(), any()))
+        when(mediaResourceGateway.storeImage(any(), any()))
                 .thenReturn(expectedMedia);
 
         when(videoGateway.update(any()))
@@ -148,7 +148,7 @@ public class UploadMediaUseCaseTest extends UseCaseTest {
 
         verify(videoGateway, times(1)).findById(eq(expectedId));
 
-        verify(mediaResourceGateway, times(1)).storeAudioVideo(eq(expectedId), eq(expectedVideoResource));
+        verify(mediaResourceGateway, times(1)).storeImage(eq(expectedId), eq(expectedVideoResource));
 
         verify(videoGateway, times(1)).update(argThat(actualVideo ->
                 actualVideo.getVideo().isEmpty()
@@ -160,19 +160,19 @@ public class UploadMediaUseCaseTest extends UseCaseTest {
     }
 
     @Test
-    public void givenCmdToUpload_whenIsvalid_shouldUpdateThumbnailMediaAndPersistIt() {
+    public void givenCmdToUpload_whenIsValid_shouldUpdateThumbnailMediaAndPersistIt() {
         // given
         final var aVideo = Fixture.Videos.systemDesign();
         final var expectedId = aVideo.getId();
         final var expectedType = VideoMediaType.THUMBNAIL;
         final var expectedResource = Fixture.Videos.resource(expectedType);
         final var expectedVideoResource = VideoResource.with(expectedResource, expectedType);
-        final var expectedMedia = Fixture.Videos.audioVideo(expectedType);
+        final var expectedMedia = Fixture.Videos.imageMedia(expectedType);
 
         when(videoGateway.findById(any()))
                 .thenReturn(Optional.of(aVideo));
 
-        when(mediaResourceGateway.storeAudioVideo(any(), any()))
+        when(mediaResourceGateway.storeImage(any(), any()))
                 .thenReturn(expectedMedia);
 
         when(videoGateway.update(any()))
@@ -189,7 +189,7 @@ public class UploadMediaUseCaseTest extends UseCaseTest {
 
         verify(videoGateway, times(1)).findById(eq(expectedId));
 
-        verify(mediaResourceGateway, times(1)).storeAudioVideo(eq(expectedId), eq(expectedVideoResource));
+        verify(mediaResourceGateway, times(1)).storeImage(eq(expectedId), eq(expectedVideoResource));
 
         verify(videoGateway, times(1)).update(argThat(actualVideo ->
                 actualVideo.getVideo().isEmpty()
@@ -201,19 +201,19 @@ public class UploadMediaUseCaseTest extends UseCaseTest {
     }
 
     @Test
-    public void givenCmdToUpload_whenIsvalid_shouldUpdateThumbnailHalfMediaAndPersistIt() {
+    public void givenCmdToUpload_whenIsValid_shouldUpdateThumbnailHalfMediaAndPersistIt() {
         // given
         final var aVideo = Fixture.Videos.systemDesign();
         final var expectedId = aVideo.getId();
         final var expectedType = VideoMediaType.THUMBNAIL_HALF;
         final var expectedResource = Fixture.Videos.resource(expectedType);
         final var expectedVideoResource = VideoResource.with(expectedResource, expectedType);
-        final var expectedMedia = Fixture.Videos.audioVideo(expectedType);
+        final var expectedMedia = Fixture.Videos.imageMedia(expectedType);
 
         when(videoGateway.findById(any()))
                 .thenReturn(Optional.of(aVideo));
 
-        when(mediaResourceGateway.storeAudioVideo(any(), any()))
+        when(mediaResourceGateway.storeImage(any(), any()))
                 .thenReturn(expectedMedia);
 
         when(videoGateway.update(any()))
@@ -230,7 +230,7 @@ public class UploadMediaUseCaseTest extends UseCaseTest {
 
         verify(videoGateway, times(1)).findById(eq(expectedId));
 
-        verify(mediaResourceGateway, times(1)).storeAudioVideo(eq(expectedId), eq(expectedVideoResource));
+        verify(mediaResourceGateway, times(1)).storeImage(eq(expectedId), eq(expectedVideoResource));
 
         verify(videoGateway, times(1)).update(argThat(actualVideo ->
                 actualVideo.getVideo().isEmpty()
@@ -253,7 +253,7 @@ public class UploadMediaUseCaseTest extends UseCaseTest {
         final var expectedErrorMessage = "Video with ID %s was not found".formatted(expectedId.getValue());
 
         when(videoGateway.findById(any()))
-                .thenReturn(Optional.empty()));
+                .thenReturn(Optional.empty());
 
         final var aCmd = UploadMediaCommand.with(expectedId.getValue(), expectedVideoResource);
 
