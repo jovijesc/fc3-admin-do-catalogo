@@ -75,7 +75,10 @@ public class GCStorageServiceTest {
         // then
         verify(storage, times(1)).get(eq(this.bucket), eq(expectedName));
 
-        Assertions.assertEquals(expectedResource, actualResource);
+        Assertions.assertEquals(expectedResource.checksum(), actualResource.checksum());
+        Assertions.assertEquals(expectedResource.name(), actualResource.name());
+        Assertions.assertEquals(expectedResource.content(), actualResource.content());
+        Assertions.assertEquals(expectedResource.contentType(), actualResource.contentType());
     }
 
     @Test
