@@ -18,7 +18,6 @@ import org.mockito.Mockito;
 import java.util.List;
 
 import static com.google.cloud.storage.Storage.BlobListOption.prefix;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -112,6 +111,7 @@ public class GCStorageServiceTest {
         final var blobBanner = mockBloc(expectedNameBanner, expectedBanner);
 
         final var page = Mockito.mock(Page.class);
+
         doReturn(List.of(blobVideo, blobBanner)).when(page).iterateAll();
 
         doReturn(page).when(storage).list(anyString(), any());
