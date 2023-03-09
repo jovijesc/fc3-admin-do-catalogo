@@ -10,7 +10,7 @@ public class StorageProperties implements InitializingBean {
     private static final Logger log = LoggerFactory.getLogger(StorageProperties.class);
     private String locationPattern;
 
-    private String filenamePatter;
+    private String filenamePattern;
     private StorageService storageService;
 
     public StorageProperties() {
@@ -32,12 +32,12 @@ public class StorageProperties implements InitializingBean {
         this.storageService = storageService;
     }
 
-    public String getFilenamePatter() {
-        return filenamePatter;
+    public String getFilenamePattern() {
+        return filenamePattern;
     }
 
-    public void setFilenamePatter(String filenamePatter) {
-        this.filenamePatter = filenamePatter;
+    public void setFilenamePattern(String filenamePattern) {
+        this.filenamePattern = filenamePattern;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class StorageProperties implements InitializingBean {
     public String toString() {
         return "StorageProperties{" +
                 "locationPattern='" + locationPattern + '\'' +
-                ", filenamePatter='" + filenamePatter + '\'' +
+                ", filenamePattern='" + filenamePattern + '\'' +
                 ", storageService=" + storageService +
                 '}';
     }
