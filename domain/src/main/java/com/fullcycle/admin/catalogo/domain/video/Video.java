@@ -3,16 +3,14 @@ package com.fullcycle.admin.catalogo.domain.video;
 import com.fullcycle.admin.catalogo.domain.AggregateRoot;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
+import com.fullcycle.admin.catalogo.domain.event.DomainEvent;
 import com.fullcycle.admin.catalogo.domain.genre.GenreID;
 import com.fullcycle.admin.catalogo.domain.utils.InstantUtils;
 import com.fullcycle.admin.catalogo.domain.validation.ValidationHandler;
 
 import java.time.Instant;
 import java.time.Year;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class Video extends AggregateRoot<VideoID> {
 
@@ -57,9 +55,10 @@ public class Video extends AggregateRoot<VideoID> {
             final AudioVideoMedia aVideo,
             final Set<CategoryID> categories,
             final Set<GenreID> genres,
-            final Set<CastMemberID> members
-    ) {
-        super(anId);
+            final Set<CastMemberID> members,
+            final List<DomainEvent> domainEvents
+            ) {
+        super(anId, domainEvents);
         this.title = aTitle;
         this.description = aDescription;
         this.launchedAt = aLaunchedYear;
@@ -141,7 +140,8 @@ public class Video extends AggregateRoot<VideoID> {
                 null,
                 categories,
                 genres,
-                members
+                members,
+                null
         );
     }
 
@@ -164,7 +164,8 @@ public class Video extends AggregateRoot<VideoID> {
                 aVideo.getVideo().orElse(null),
                 new HashSet<>(aVideo.getCategories()),
                 new HashSet<>(aVideo.getGenres()),
-                new HashSet<>(aVideo.getCastMembers())
+                new HashSet<>(aVideo.getCastMembers()),
+                aVideo.getDomainEvents()
         );
     }
 
@@ -207,7 +208,8 @@ public class Video extends AggregateRoot<VideoID> {
                 aVideo,
                 categories,
                 genres,
-                members
+                members,
+                null
         );
     }
 
