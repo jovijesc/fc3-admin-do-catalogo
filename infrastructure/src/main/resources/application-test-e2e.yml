@@ -1,7 +1,7 @@
 amqp:
   host: localhost
   port: 5672
-  username: adm_videos
+  username: admin_videos
   password: 123456
 
 mysql:
