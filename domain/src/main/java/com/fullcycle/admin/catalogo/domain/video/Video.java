@@ -253,7 +253,7 @@ public class Video extends AggregateRoot<VideoID> {
         return Optional.ofNullable(banner);
     }
 
-    public Video setBanner(final ImageMedia banner) {
+    public Video updateBannerMedia(final ImageMedia banner) {
         this.banner = banner;
         this.updatedAt = InstantUtils.now();
         return this;
@@ -263,7 +263,7 @@ public class Video extends AggregateRoot<VideoID> {
         return Optional.ofNullable(thumbnail);
     }
 
-    public Video setThumbnail(final ImageMedia thumbnail) {
+    public Video updateThumbnailMedia(final ImageMedia thumbnail) {
         this.thumbnail = thumbnail;
         this.updatedAt = InstantUtils.now();
         return this;
@@ -273,7 +273,7 @@ public class Video extends AggregateRoot<VideoID> {
         return Optional.ofNullable(thumbnailHalf);
     }
 
-    public Video setThumbnailHalf(final ImageMedia thumbnailHalf) {
+    public Video updateThumbnailHalfMedia(final ImageMedia thumbnailHalf) {
         this.thumbnailHalf = thumbnailHalf;
         this.updatedAt = InstantUtils.now();
         return this;
@@ -283,9 +283,10 @@ public class Video extends AggregateRoot<VideoID> {
         return Optional.ofNullable(trailer);
     }
 
-    public Video setTrailer(final AudioVideoMedia trailer) {
+    public Video updateTrailerMedia(final AudioVideoMedia trailer) {
         this.trailer = trailer;
         this.updatedAt = InstantUtils.now();
+        onAudioVideoMediaUpdated(trailer);
         return this;
     }
 
@@ -293,9 +294,10 @@ public class Video extends AggregateRoot<VideoID> {
         return Optional.ofNullable(video);
     }
 
-    public Video setVideo(final AudioVideoMedia video) {
+    public Video updateVideoMedia(final AudioVideoMedia video) {
         this.video = video;
         this.updatedAt = InstantUtils.now();
+        onAudioVideoMediaUpdated(video);
         return this;
     }
 
@@ -325,19 +327,25 @@ public class Video extends AggregateRoot<VideoID> {
 
     public Video processing(final VideoMediaType aType) {
         if(VideoMediaType.VIDEO == aType) {
-            getVideo().ifPresent(media -> setVideo(media.processing()));
+            getVideo().ifPresent(media -> updateVideoMedia(media.processing()));
         } else if(VideoMediaType.TRAILER == aType) {
-            getTrailer().ifPresent(media -> setTrailer(media.processing()));
+            getTrailer().ifPresent(media -> updateTrailerMedia(media.processing()));
         }
         return this;
     }
 
     public Video completed(final VideoMediaType aType, final String encondedPath) {
         if(VideoMediaType.VIDEO == aType) {
-            getVideo().ifPresent(media -> setVideo(media.completed(encondedPath)));
+            getVideo().ifPresent(media -> updateVideoMedia(media.completed(encondedPath)));
         } else if(VideoMediaType.TRAILER == aType) {
-            getTrailer().ifPresent(media -> setTrailer(media.completed(encondedPath)));
+            getTrailer().ifPresent(media -> updateTrailerMedia(media.completed(encondedPath)));
         }
         return this;
+    }
+
+    private void onAudioVideoMediaUpdated(AudioVideoMedia media) {
+        if(media != null && media.isPendingEncode()) {
+            this.registerEvent(new VideoMediaCreated(getId().getValue(), media.rawLocation()));
+        }
     }
 }
