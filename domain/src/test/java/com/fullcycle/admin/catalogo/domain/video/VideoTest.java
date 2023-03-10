@@ -3,11 +3,11 @@ package com.fullcycle.admin.catalogo.domain.video;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
 import com.fullcycle.admin.catalogo.domain.genre.GenreID;
+import com.fullcycle.admin.catalogo.domain.utils.InstantUtils;
 import com.fullcycle.admin.catalogo.domain.validation.handler.ThrowsValidationHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
 import java.time.Year;
 import java.util.Set;
 
@@ -66,6 +66,7 @@ public class VideoTest {
         Assertions.assertTrue(actualVideo.getBanner().isEmpty());
         Assertions.assertTrue(actualVideo.getThumbnail().isEmpty());
         Assertions.assertTrue(actualVideo.getThumbnailHalf().isEmpty());
+        Assertions.assertTrue(actualVideo.getDomainEvents().isEmpty());
 
         Assertions.assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()));
 
@@ -85,6 +86,8 @@ public class VideoTest {
         final var expectedOpened = false;
         final var expectedPublished = false;
         final var expectedRating = Rating.L;
+        final var expectedEvent = new VideoMediaCreated("Id", "file");
+        final var expectedEventCount = 1;
         final var expectedCategories = Set.of(CategoryID.unique());
         final var expectedGenres = Set.of(GenreID.unique());
         final var expectedMembers = Set.of(CastMemberID.unique());
@@ -101,6 +104,8 @@ public class VideoTest {
                 Set.of(),
                 Set.of()
         );
+
+        aVideo.registerEvent(expectedEvent);
 
         // when
         final var actualVideo = Video.with(aVideo).update(
@@ -138,6 +143,9 @@ public class VideoTest {
         Assertions.assertTrue(actualVideo.getBanner().isEmpty());
         Assertions.assertTrue(actualVideo.getThumbnail().isEmpty());
         Assertions.assertTrue(actualVideo.getThumbnailHalf().isEmpty());
+
+        Assertions.assertEquals(expectedEventCount, actualVideo.getDomainEvents().size());
+        Assertions.assertEquals(expectedEvent, actualVideo.getDomainEvents().get(0));
 
         Assertions.assertDoesNotThrow(() -> aVideo.validate(new ThrowsValidationHandler()));
 
@@ -457,5 +465,50 @@ public class VideoTest {
         Assertions.assertEquals(aThumbMedia, actualVideo.getThumbnailHalf().get());
 
         Assertions.assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()));
+    }
+
+    @Test
+    public void givenValidVideo_whenCallsWith_shouldCreateWithoutEvents() {
+        // given
+        final var expectedTitle = "System Design Interviews";
+        final var expectedDescription = """
+                What is a system design interview? A system design interview is a conversation between 2 engineers. 
+                Given some vague requirements, these engineers will discuss and define more well-defined requirements, 
+                followed by engineering designs that an engineering team can implement
+                """;
+        final var expectedLaunchedAt = Year.of(2022);
+        final var expectedDuration = 120.10;
+        final var expectedOpened = false;
+        final var expectedPublished = false;
+        final var expectedRating = Rating.L;
+        final var expectedCategories = Set.of(CategoryID.unique());
+        final var expectedGenres = Set.of(GenreID.unique());
+        final var expectedMembers = Set.of(CastMemberID.unique());
+
+        // when
+        final var actualVideo = Video.with(
+                VideoID.unique(),
+                expectedTitle,
+                expectedDescription,
+                expectedLaunchedAt,
+                expectedDuration,
+                expectedOpened,
+                expectedPublished,
+                expectedRating,
+                InstantUtils.now(),
+                InstantUtils.now(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                expectedCategories,
+                expectedGenres,
+                expectedMembers
+        );
+
+        // then
+        Assertions.assertNotNull(actualVideo.getDomainEvents());
+
     }
 }
