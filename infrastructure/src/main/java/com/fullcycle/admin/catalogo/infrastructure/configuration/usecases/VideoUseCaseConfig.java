@@ -4,6 +4,8 @@ import com.fullcycle.admin.catalogo.application.video.create.CreateVideoUseCase;
 import com.fullcycle.admin.catalogo.application.video.create.DefaultCreateVideoUseCase;
 import com.fullcycle.admin.catalogo.application.video.media.update.DefaultUpdateMediaStatusUseCase;
 import com.fullcycle.admin.catalogo.application.video.media.update.UpdateMediaStatusUseCase;
+import com.fullcycle.admin.catalogo.application.video.retrieve.get.DefaultGetVideoByIdUseCase;
+import com.fullcycle.admin.catalogo.application.video.retrieve.get.GetVideoByIdUseCase;
 import com.fullcycle.admin.catalogo.domain.castmember.CastMemberGateway;
 import com.fullcycle.admin.catalogo.domain.category.CategoryGateway;
 import com.fullcycle.admin.catalogo.domain.genre.GenreGateway;
@@ -46,5 +48,11 @@ public class VideoUseCaseConfig {
     public UpdateMediaStatusUseCase updateMediaStatusUseCase() {
         return new DefaultUpdateMediaStatusUseCase(videoGateway);
     }
+
+    @Bean
+    public GetVideoByIdUseCase getVideoByIdUseCase() {
+        return new DefaultGetVideoByIdUseCase(videoGateway);
+    }
+
 
 }
