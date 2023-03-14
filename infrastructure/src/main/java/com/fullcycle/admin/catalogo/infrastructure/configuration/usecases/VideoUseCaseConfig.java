@@ -2,6 +2,8 @@ package com.fullcycle.admin.catalogo.infrastructure.configuration.usecases;
 
 import com.fullcycle.admin.catalogo.application.video.create.CreateVideoUseCase;
 import com.fullcycle.admin.catalogo.application.video.create.DefaultCreateVideoUseCase;
+import com.fullcycle.admin.catalogo.application.video.delete.DefaultDeleteVideoUseCase;
+import com.fullcycle.admin.catalogo.application.video.delete.DeleteVideoUseCase;
 import com.fullcycle.admin.catalogo.application.video.media.update.DefaultUpdateMediaStatusUseCase;
 import com.fullcycle.admin.catalogo.application.video.media.update.UpdateMediaStatusUseCase;
 import com.fullcycle.admin.catalogo.application.video.retrieve.get.DefaultGetVideoByIdUseCase;
@@ -59,6 +61,11 @@ public class VideoUseCaseConfig {
     @Bean
     public UpdateVideoUseCase updateVideoUseCase() {
         return new DefaultUpdateVideoUseCase(categoryGateway, castMemberGateway, genreGateway, mediaResourceGateway, videoGateway);
+    }
+
+    @Bean
+    public DeleteVideoUseCase deleteVideoUseCase() {
+        return new DefaultDeleteVideoUseCase(videoGateway, mediaResourceGateway);
     }
 
 }
