@@ -8,6 +8,8 @@ import com.fullcycle.admin.catalogo.application.video.media.get.DefaultGetMediaU
 import com.fullcycle.admin.catalogo.application.video.media.get.GetMediaUseCase;
 import com.fullcycle.admin.catalogo.application.video.media.update.DefaultUpdateMediaStatusUseCase;
 import com.fullcycle.admin.catalogo.application.video.media.update.UpdateMediaStatusUseCase;
+import com.fullcycle.admin.catalogo.application.video.media.upload.DefaultUploadMediaUseCase;
+import com.fullcycle.admin.catalogo.application.video.media.upload.UploadMediaUseCase;
 import com.fullcycle.admin.catalogo.application.video.retrieve.get.DefaultGetVideoByIdUseCase;
 import com.fullcycle.admin.catalogo.application.video.retrieve.get.GetVideoByIdUseCase;
 import com.fullcycle.admin.catalogo.application.video.retrieve.list.DefaultListVideosUseCase;
@@ -81,4 +83,10 @@ public class VideoUseCaseConfig {
     public GetMediaUseCase getMediaUseCase() {
         return new DefaultGetMediaUseCase(mediaResourceGateway);
     }
+
+    @Bean
+    public UploadMediaUseCase uploadMediaUseCase() {
+        return new DefaultUploadMediaUseCase(mediaResourceGateway, videoGateway);
+    }
+
 }
