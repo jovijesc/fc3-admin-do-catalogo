@@ -5,7 +5,7 @@ on:
     branches:
       - 'features/**'
       - 'bugfixes/**'
-      - 'ci-cd/**'
+      - 'ci-cd**'
   # Habilita o gatilho manual atraves da interface do Github Actions
   workflow_dispatch:
 
