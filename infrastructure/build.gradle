@@ -13,6 +13,7 @@ group 'com.fullcycle.admin.catalogo.infrastructure'
 bootJar {
     archiveName 'application.jar'
     destinationDirectory.set(file("${rootProject.buildDir}/libs"))
+
 }
 
 dependencies {
