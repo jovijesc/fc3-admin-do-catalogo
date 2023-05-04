@@ -1,70 +1,23 @@
 version: '3.7'
 
 services:
-#  app:
-#    container_name: adm_videos_app
-##    build: .
+  app:
+    container_name: adm_videos_app
+    build:
+      context: ../..
+      dockerfile: Dockerfile.dev
 #    image: jovijesc/fc3-admin-catalogo-de-videos-java:ci-cd-1
-#    profiles: ["app"]
-#    restart: unless-stopped
-#    env_file:
-#      - .env
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - mysql
-#      - rabbitmq
-#    networks:
-#      - adm_videos_network
-
-  mysql:
-    container_name: adm_videos_mysql
-    image: mysql:latest
-    environment:
-      MYSQL_ROOT_PASSWORD: 123456
-      MYSQL_DATABASE: adm_videos
-      MYSQL_ROOT_HOST: '%'
-    security_opt:
-      - seccomp:unconfined
+    restart: unless-stopped
+    env_file:
+      - .env.local
     ports:
-      - "3306:3306"
-    volumes:
-      - ../.docker/mysql:/var/lib/mysql:rw
+      - "8080:8080"
     networks:
       - adm_videos_network
-
-
-  rabbitmq:
-    container_name: adm_videos_rabbitmq
-    image: rabbitmq:3-management
-    environment:
-      - RABBITMQ_ERLANG_COOKIE=SWUIPOIUYGREHJKOIOEIROI
-      - RABBITMQ_DEFAULT_USER=admin_videos
-      - RABBITMQ_DEFAULT_PASS=123456
-      - RABBITMQ_DEFAULT_VHOST=/
-    ports:
-      - "15672:15672" # porta de gerenciamento do RabbitMQ
-      - "5672:5672" # porta padrão do RabbitMQ
-    networks:
-      - adm_videos_network
-
-
-  keycloak:
-    container_name: adm_videos_keycloak
-    image: quay.io/keycloak/keycloak:21.0.1
-    environment:
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=admin
-    ports:
-      - "8443:8080"
-    command:
-      - start-dev
-    volumes:
-#      - ./data:/opt/jboss/keycloak/standalone/data
-      - ../.docker/keycloak:/opt/keycloak/data/h2:rw
-    networks:
-      - adm_videos_network
+      - adm_videos_services
 
 
 networks:
   adm_videos_network:
+  adm_videos_services:
+    external: true
