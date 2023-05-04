@@ -42,7 +42,9 @@ services:
     ports:
       - "8443:8080"
     command:
-      - start-dev
+#      - start-dev # Utilizar esse comando quando a aplicação estiver executando fora do docker(ex: IDE IntelliJ)
+      - start-dev --hostname-url=http://keycloak:8080 # Utilizar esse comando quando a aplicação estiver executando dentro do docker
+
     volumes:
 #      - ./data:/opt/jboss/keycloak/standalone/data
       - ../.docker/keycloak:/opt/keycloak/data/h2:rw
